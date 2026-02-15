@@ -156,7 +156,7 @@ This phase involves building the actual pages of the site, starting with the hig
 
 -   **Path**: `src/pages/index.astro`
     -   **Purpose**: The main homepage of the website.
-    -   **Depends on**: All P1 components (`BaseLayout`, `Header`, `Footer`, `Hero`, `Section`, `Card`, `CTA`).
+    -   **Depends on**: All P2 components (`BaseLayout`, `Header`, `Footer`, `Hero`, `Section`, `Card`, `CTA`).
     -   **Key context**:
         -   `specs/spec-0.md`: The complete specification for the homepage layout, sections, and content.
         -   `design/patterns.md`: References for all content blocks used.
