@@ -9,7 +9,7 @@ status: planning
 
 ## Stack (Fixed)
 - **Framework**: Astro 5 (static site generation, content collections)
-- **Styling**: Tailwind CSS 4 (via UnoCSS or `@tailwindcss/astro`)
+- **Styling**: Tailwind CSS 4 (via `@tailwindcss/astro`)
 - **Deployment**: Vercel (static hosting)
 - **Images**: Astro Image / Sharp for optimization
 - **Icons**: Astro Icon (using Lucide or Heroicons set for consistent iconography)
@@ -57,7 +57,7 @@ This list aggregates pages from `prototype/sitemap.md` and `docs/core/003-pages.
 ## Performance Targets
 
 - **Lighthouse**: Achieve 90+ across all categories (Performance, Accessibility, Best Practices, SEO).
-- **Core Web Vitals**: Maintain Largest Contentful Paint (LCP) under 2.5s, Cumulative Layout Shift (CLS) under 0.1, and Interaction to Next Paint (INP) under 200ms.
+- **Core Web Vitals**: Maintain Largest Contentful Paint (LCP) under 1.5s, Cumulative Layout Shift (CLS) under 0.1, and Interaction to Next Paint (INP) under 200ms.
 - **Total Page Weight**: Keep initial page loads under 500KB per page (excluding optimized images).
 - **No Layout Shift**: Eliminate layout shifts from font loading by using `font-display: swap` and preloading critical fonts.
 
