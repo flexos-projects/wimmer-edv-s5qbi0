@@ -1,0 +1,142 @@
+---
+---
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wimmer EDV</title>
+  <style>
+    :root { --brand: #1a5276; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0a0a0f; color: #e2e8f0; min-height: 100vh; }
+    .container { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem; }
+    header { text-align: center; padding: 3rem 0 2rem; }
+    .logo { width: 56px; height: 56px; border-radius: 14px; background: color-mix(in srgb, var(--brand) 15%, transparent); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
+    .logo svg { width: 28px; height: 28px; stroke: var(--brand); }
+    h1 { font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: -0.025em; }
+    .sub { color: #94a3b8; margin-top: .5rem; }
+    .bar-wrap { height: 3px; background: #1e293b; border-radius: 2px; margin: 2rem 0 1.5rem; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--brand); width: 0%; transition: width .6s ease; border-radius: 2px; }
+    .phases { list-style: none; }
+    .phase { display: flex; align-items: center; gap: .75rem; padding: .65rem 0; border-bottom: 1px solid #1e293b40; font-size: .9rem; }
+    .dot { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 600; flex-shrink: 0; }
+    .p-wait .dot { background: #1e293b; color: #475569; }
+    .p-run .dot { background: color-mix(in srgb, var(--brand) 20%, transparent); color: var(--brand); animation: pulse 2s infinite; }
+    .p-done .dot { background: #064e3b; color: #34d399; }
+    .p-wait .label { color: #475569; }
+    .docs { margin-top: 2.5rem; display: none; }
+    .docs h2 { font-size: 1.15rem; color: #fff; margin-bottom: 1rem; }
+    .doc { background: #111827; border: 1px solid #1e293b; border-radius: 10px; margin-bottom: .75rem; overflow: hidden; }
+    .doc summary { padding: 1rem 1.25rem; cursor: pointer; font-weight: 500; color: var(--brand); list-style: none; display: flex; align-items: center; gap: .5rem; }
+    .doc summary::before { content: '\25B6'; font-size: .6rem; transition: transform .2s; }
+    .doc[open] summary::before { transform: rotate(90deg); }
+    .doc-body { padding: 0 1.25rem 1.25rem; color: #94a3b8; line-height: 1.7; font-size: .9rem; }
+    .doc-body h1,.doc-body h2,.doc-body h3 { color: #e2e8f0; margin: 1rem 0 .4rem; font-size: 1rem; }
+    .doc-body p { margin: .4rem 0; }
+    .doc-body ul,.doc-body ol { padding-left: 1.25rem; margin: .4rem 0; }
+    .doc-body code { background: #1e293b; padding: .1rem .3rem; border-radius: 3px; font-size: .85em; }
+    .doc-body pre { background: #1e293b; padding: .75rem; border-radius: 6px; overflow-x: auto; margin: .5rem 0; }
+    .doc-body pre code { background: none; padding: 0; }
+    .footer { text-align: center; padding: 3rem 0 2rem; color: #334155; font-size: .8rem; }
+    .footer a { color: var(--brand); text-decoration: none; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+    <h1>Wimmer EDV</h1>
+    <p class="sub" id="subtitle">Building your new site...</p>
+  </header>
+  <div class="bar-wrap"><div class="bar-fill" id="bar"></div></div>
+  <ul class="phases" id="phases">
+    <li class="phase p-run" data-p="setup"><span class="dot">1</span><span class="label">Creating project</span></li>
+    <li class="phase p-wait" data-p="research"><span class="dot">2</span><span class="label">Researching brand &amp; website</span></li>
+    <li class="phase p-wait" data-p="docs"><span class="dot">3</span><span class="label">Writing core documentation</span></li>
+    <li class="phase p-wait" data-p="design"><span class="dot">4</span><span class="label">Design system &amp; sitemap</span></li>
+    <li class="phase p-wait" data-p="specs"><span class="dot">5</span><span class="label">Feature specifications</span></li>
+    <li class="phase p-wait" data-p="build"><span class="dot">6</span><span class="label">Generating site code</span></li>
+    <li class="phase p-wait" data-p="deploy"><span class="dot">7</span><span class="label">Final deployment</span></li>
+  </ul>
+  <div class="docs" id="docsWrap">
+    <h2>Project Documentation</h2>
+    <div id="docs"></div>
+  </div>
+  <div class="footer">Powered by <a href="https://flexos.dev">FlexOS</a></div>
+</div>
+<script>
+(function(){
+  var O='flexos-projects',R='wimmer-edv-s5qbi0';
+  var A='https://api.github.com/repos/'+O+'/'+R+'/contents/';
+  var DOCS=['000-import.md','001-vision.md','002-pages.md','003-features.md','004-flows.md','005-database.md','006-design.md','007-technical.md'];
+  var checks={setup:true,research:'.flexos/imports/',docs:'.flexos/docs/core/000-import.md',design:'.flexos/design/design-system.md',specs:'.flexos/specs/',build:'.flexos/builds/001/plan.md',deploy:'src/pages/'};
+  var done={setup:true},loaded={};
+
+  function ck(p){return fetch(A+p).then(function(r){return r.ok}).catch(function(){return false})}
+  function raw(p){return fetch(A+p,{headers:{Accept:'application/vnd.github.v3.raw'}}).then(function(r){return r.ok?r.text():null}).catch(function(){return null})}
+
+  function md(s){
+    return s.replace(/^---[\s\S]*?---\n*/,'')
+      .replace(/```[\s\S]*?```/g,function(m){return '<pre><code>'+m.slice(3,-3).replace(/^\w*\n/,'')+'</code></pre>'})
+      .replace(/^### (.*$)/gm,'<h3>$1</h3>')
+      .replace(/^## (.*$)/gm,'<h2>$1</h2>')
+      .replace(/^# (.*$)/gm,'<h1>$1</h1>')
+      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g,'<em>$1</em>')
+      .replace(/`([^`]+)`/g,'<code>$1</code>')
+      .replace(/^- (.*$)/gm,'<li>$1</li>')
+      .replace(/\n\n/g,'<br><br>');
+  }
+
+  function ui(){
+    var keys=Object.keys(checks),n=0;
+    keys.forEach(function(k){if(done[k])n++});
+    document.getElementById('bar').style.width=Math.round(n/keys.length*100)+'%';
+    document.querySelectorAll('.phase').forEach(function(el){
+      var p=el.dataset.p;
+      if(done[p]){el.className='phase p-done';el.querySelector('.dot').innerHTML='&#10003;'}
+    });
+    var set=false;
+    keys.forEach(function(k){
+      if(!done[k]&&!set){
+        var el=document.querySelector('[data-p="'+k+'"]');
+        if(el&&el.className.indexOf('p-done')<0){el.className='phase p-run';set=true}
+      }
+    });
+    if(n>=keys.length)document.getElementById('subtitle').textContent='Your new site is ready!';
+    var dk=Object.keys(loaded).sort();
+    if(dk.length>0){
+      document.getElementById('docsWrap').style.display='block';
+      document.getElementById('docs').innerHTML=dk.map(function(k){
+        var t=k.replace(/^\d+-/,'').replace('.md','').replace(/-/g,' ');
+        t=t.charAt(0).toUpperCase()+t.slice(1);
+        return '<details class="doc"><summary>'+t+'</summary><div class="doc-body">'+md(loaded[k])+'</div></details>';
+      }).join('');
+    }
+  }
+
+  async function poll(){
+    var keys=Object.keys(checks);
+    for(var i=0;i<keys.length;i++){
+      var k=keys[i];
+      if(done[k])continue;
+      if(checks[k]===true){done[k]=true;continue}
+      if(await ck(checks[k]))done[k]=true;
+      else break;
+    }
+    for(var j=0;j<DOCS.length;j++){
+      if(loaded[DOCS[j]])continue;
+      var c=await raw('.flexos/docs/core/'+DOCS[j]);
+      if(c)loaded[DOCS[j]]=c;
+    }
+    ui();
+    if(Object.keys(done).length<keys.length)setTimeout(poll,15000);
+  }
+
+  ui();
+  setTimeout(poll,5000);
+})();
+</script>
+</body>
+</html>
