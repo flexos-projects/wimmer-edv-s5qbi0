@@ -1,192 +1,197 @@
+Excellent. This is a perfect task for creating a structured yet flexible design playbook. I will synthesize the provided `Design Direction` and `Brand Brief` into the requested `.flexos/design/design-system.md` format.
+
 ---
-id: design-system
-title: "Design System"
-description: "Design tokens, visual identity, and guidelines for generating the project's CSS design system"
-type: design
-subtype: manifest
-status: draft
-sequence: 1
-tags: [design, tokens, colors, typography, system]
-relatesTo: [docs/core/006-design.md, assets/manifest.md]
-createdAt: ""
-updatedAt: ""
+type: config
+subtype: design-system
+title: Design System
 ---
 
-<flex_block type="instructions">
-This file defines the project's visual identity and design tokens. It serves two purposes:
+This document provides the foundational design system for the Wimmer EDV website redesign. It is structured to give an AI builder (you) a clear set of rules and a strong sense of creative direction.
 
-1. For the AI: When generating prototypes, components, or CSS, read this file to understand the project's visual language — colors, typography, spacing, component patterns. Generate a tokens.css and components.css in prototype/shared/ based on what's defined here.
+The system has TWO parts:
+*   **TOKENS:** These are the non-negotiable, exact values you **must** use for colors, fonts, and core spacing to ensure brand consistency.
+*   **CREATIVE DIRECTION:** These are the principles and guidelines that inspire creative layouts and interactions. They define the *feeling* of the site, giving you the freedom to build unique pages that share the same DNA.
 
-2. For the builder: When implementing the real application, use the CSS custom properties defined here as the single source of truth for all visual decisions.
+---
 
-The tokens flex_block below contains the actual CSS custom property values. The markdown sections explain the design rationale — why these colors, what the vibe is, how components should feel. The AI should read both.
-</flex_block>
+# PART 1: TOKENS (The Builder MUST Use These)
 
-# Design System
+## Colors
 
-## Design Vision
+The color palette is designed to feel trustworthy, professional, and modern, moving beyond generic "tech blue." It is built around a sophisticated Slate Blue foundation, a vibrant Green accent for action, and clean, soft neutrals.
 
-This section captures the overall aesthetic direction. The AI uses this to make consistent creative decisions when generating prototypes and UI.
+**Reasoning:** The **Slate Blue** (`primary`) conveys stability and calm competence. The **Tech Green** (`accent`) signifies success, health, and action, drawing the eye to key CTAs. The optional **Warm Ochre** (`secondary`) can be used for special highlights like partner badges. The `surface` colors are soft and warm, making the generous white space feel more inviting and premium.
 
-- **Style:** (Modern, Minimal, Bold, Playful, Corporate, etc.)
-- **Vibe:** (2-3 words describing how the product should feel)
-- **Inspiration:** (Reference apps, websites, or brands)
-- **Dark mode:** Both (light default, dark via toggle and OS preference)
-
-## Color Tokens — Light Mode
-
-<flex_block type="tokens">
-{
-  "type": "colors",
-  "mode": "light",
-  "tokens": {
-    "--color-primary": "#8b5cf6",
-    "--color-primary-dark": "#7c3aed",
-    "--color-primary-light": "#a78bfa",
-    "--color-accent": "#06b6d4",
-    "--color-success": "#22c55e",
-    "--color-warning": "#f59e0b",
-    "--color-error": "#ef4444",
-    "--color-bg": "#ffffff",
-    "--color-surface": "#f8fafc",
-    "--color-elevated": "#ffffff",
-    "--color-border": "#e2e8f0",
-    "--color-text-primary": "#0f172a",
-    "--color-text-secondary": "#64748b",
-    "--color-text-tertiary": "#94a3b8"
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#EAF0F6',
+          100: '#D5E1ED',
+          200: '#ACC3DB',
+          300: '#82A5CA',
+          400: '#5987B8',
+          500: '#446E9B',
+          600: '#2D557F',
+          700: '#2D3748', // Base: Slate Blue
+          800: '#202835',
+          900: '#161C24',
+        },
+        accent: {
+          50: '#EDF9F1',
+          100: '#D5F1DE',
+          200: '#ADDEC4',
+          300: '#85CAAB',
+          400: '#5CB691',
+          500: '#38A169', // Base: Tech Green
+          600: '#2F855A',
+          700: '#276749',
+          800: '#1F4D38',
+          900: '#173628',
+        },
+        secondary: { // Optional: Warm Ochre
+          50: '#FEF8ED',
+          100: '#FDF0D5',
+          200: '#FAE3AD',
+          300: '#F6D684',
+          400: '#F0C25A',
+          500: '#D69E2E', // Base: Warm Ochre
+          600: '#B08226',
+          700: '#8A661E',
+          800: '#644A16',
+          900: '#3E2E0E',
+        },
+        surface: { // Neutrals
+          50: '#F7FAFC',   // Off-White (Page Background)
+          100: '#EDF2F7',
+          200: '#E2E8F0',  // Light Gray (Borders, Cards)
+          300: '#CBD5E0',
+          400: '#A0AEC0',
+          500: '#718096',
+          600: '#4A5568',
+          700: '#2D3748',  // Same as primary-700
+          800: '#1A202C',  // Dark Text
+          900: '#171923',
+        },
+      }
+    }
   }
 }
-</flex_block>
+```
 
-## Color Tokens — Dark Mode
+**Semantic Colors:**
+*   **success:** `#38A169` (use the `accent` base)
+*   **warning:** `#D69E2E` (use the `secondary` base)
+*   **error:** `#C53030` (a deep, serious red that complements the palette)
 
-<flex_block type="tokens">
-{
-  "type": "colors",
-  "mode": "dark",
-  "tokens": {
-    "--color-primary": "#a78bfa",
-    "--color-primary-dark": "#8b5cf6",
-    "--color-primary-light": "#c4b5fd",
-    "--color-accent": "#22d3ee",
-    "--color-success": "#4ade80",
-    "--color-warning": "#fbbf24",
-    "--color-error": "#f87171",
-    "--color-bg": "#0f172a",
-    "--color-surface": "#1e293b",
-    "--color-elevated": "#334155",
-    "--color-border": "#334155",
-    "--color-text-primary": "#f1f5f9",
-    "--color-text-secondary": "#94a3b8",
-    "--color-text-tertiary": "#64748b"
-  }
-}
-</flex_block>
+## Typography
 
-### Theme Switching
+-   **Heading Font:** **Inter**. It is a modern, highly legible geometric sans-serif designed for UIs. Its confidence and clarity perfectly match the "calm competence" brand personality.
+-   **Body Font:** **Inter**. Using a single, versatile font family ensures visual harmony and a professional, cohesive feel across the entire site.
 
-The prototype supports both light and dark modes via a `data-theme` attribute on `<html>`. Setting `data-theme="dark"` activates dark tokens. If no attribute is set, the OS preference (`prefers-color-scheme: dark`) is used as a fallback. A toggle button in the nav lets users switch manually — the preference is saved to `localStorage`.
+-   **Tailwind Font Size Scale:**
+    ```javascript
+    // tailwind.config.js -> theme.fontSize
+    'xs': ['0.75rem', { lineHeight: '1rem' }],      // 12px
+    'sm': ['0.875rem', { lineHeight: '1.25rem' }],   // 14px
+    'base': ['1rem', { lineHeight: '1.6' }],         // 16px (Base body)
+    'lg': ['1.125rem', { lineHeight: '1.75rem' }],  // 18px (Larger body)
+    'xl': ['1.25rem', { lineHeight: '1.75rem' }],  // 20px
+    '2xl': ['1.5rem', { lineHeight: '2rem' }],      // 24px
+    '3xl': ['1.875rem', { lineHeight: '1.4' }],    // 30px (H3)
+    '4xl': ['2.25rem', { lineHeight: '1.3' }],     // 36px (H2)
+    '5xl': ['3rem', { lineHeight: '1.2' }],        // 48px (H1)
+    '6xl': ['3.75rem', { lineHeight: '1.1' }],     // 60px (Hero)
+    ```
 
-### Color Usage
+-   **Font Weight Usage:**
+    -   `font-regular` (400): All body copy, paragraphs, and detailed text.
+    -   `font-medium` (500): UI elements like navigation links, button text, and captions for emphasis.
+    -   `font-semibold` (600): Sub-headings (`<h4>`, `<h5>`) and important labels.
+    -   `font-bold` (700): Primary headlines (`<h1>`, `<h2>`, `<h3>`).
 
-- **Primary** — CTAs, links, active states, key interactive elements
-- **Accent** — Secondary highlights, badges, supplementary actions
-- **Semantic** (success/warning/error) — Feedback states, alerts, validation
-- **Surface/Elevated** — Card backgrounds, modals, layered UI
-- **Text tiers** — Primary for headings and body, secondary for labels, tertiary for hints
+## Spacing
 
-## Typography Tokens
+-   **Section Vertical Padding:** Generous. Use `py-24` (96px) or `py-32` (128px) between major page sections to create a clean, uncluttered, and premium feel.
+-   **Content Max-Width:** `1280px` (`max-w-7xl`). This provides a comfortable reading line-length on large screens.
+-   **Container Horizontal Padding:** `px-4` on mobile, `px-6` on `md` screens and up. Ensures content never touches the screen edges.
 
-<flex_block type="tokens">
-{
-  "type": "typography",
-  "tokens": {
-    "--font-heading": "Inter, system-ui, -apple-system, sans-serif",
-    "--font-body": "Inter, system-ui, -apple-system, sans-serif",
-    "--font-mono": "JetBrains Mono, ui-monospace, monospace",
-    "--font-size-xs": "0.75rem",
-    "--font-size-sm": "0.875rem",
-    "--font-size-base": "1rem",
-    "--font-size-lg": "1.125rem",
-    "--font-size-xl": "1.25rem",
-    "--font-size-2xl": "1.5rem",
-    "--font-size-3xl": "2rem",
-    "--font-size-4xl": "2.5rem",
-    "--font-weight-normal": "400",
-    "--font-weight-medium": "500",
-    "--font-weight-semibold": "600",
-    "--font-weight-bold": "700",
-    "--line-height-tight": "1.25",
-    "--line-height-normal": "1.5",
-    "--line-height-relaxed": "1.75"
-  }
-}
-</flex_block>
+## Shapes
 
-## Spacing & Layout Tokens
+-   **Border Radius:** Use subtle, modern rounding.
+    -   `rounded-md` (6px) or `rounded-lg` (8px): Default for buttons, cards, and input fields.
+    -   `rounded-xl` (12px) or `rounded-2xl` (16px): For larger containers and images to give a slightly softer, more modern feel.
+    -   `rounded-full`: Only for small, circular elements like avatars, tags, or status indicators.
+    -   Avoid sharp corners (`rounded-none`) unless a specific design calls for it.
 
-<flex_block type="tokens">
-{
-  "type": "spacing",
-  "tokens": {
-    "--space-1": "0.25rem",
-    "--space-2": "0.5rem",
-    "--space-3": "0.75rem",
-    "--space-4": "1rem",
-    "--space-6": "1.5rem",
-    "--space-8": "2rem",
-    "--space-12": "3rem",
-    "--space-16": "4rem",
-    "--space-24": "6rem",
-    "--radius-sm": "0.375rem",
-    "--radius-md": "0.5rem",
-    "--radius-lg": "0.75rem",
-    "--radius-xl": "1rem",
-    "--radius-full": "9999px",
-    "--shadow-sm": "0 1px 2px rgba(0,0,0,0.05) (light) / rgba(0,0,0,0.3) (dark)",
-    "--shadow-md": "0 4px 6px rgba(0,0,0,0.07) (light) / rgba(0,0,0,0.4) (dark)",
-    "--shadow-lg": "0 10px 15px rgba(0,0,0,0.1) (light) / rgba(0,0,0,0.5) (dark)",
-    "--content-max-width": "1200px",
-    "--sidebar-width": "240px",
-    "--bottom-nav-height": "56px",
-    "--touch-target-min": "44px"
-  }
-}
-</flex_block>
+-   **Shadow Style:** Diffuse and subtle. Use shadows to lift elements off the background, not to create heavy borders.
+    -   Default: Tailwind's `shadow-md`.
+    -   On Hover: Transition to `shadow-lg` to indicate interactivity.
+    -   The shadow color should be very subtle, based on `primary-700` with low opacity.
 
-## Component Guidelines
+---
 
-These are not CSS — they're instructions for the AI when generating prototype components.
+# PART 2: CREATIVE DIRECTION (Inspire the Builder)
 
-### Buttons
-- Primary: filled with `--color-primary`, white text, `--radius-md`
-- Secondary: outlined with `--color-primary`
-- Ghost: text only, no background or border
-- All buttons: minimum `--touch-target-min` height on mobile
+## Visual Personality (3-5 adjectives)
 
-### Cards
-- Background: `--color-surface`, border: `--color-border`
-- Border radius: `--radius-lg`
-- Padding: `--space-4` mobile, `--space-6` desktop
-- Hover: subtle `--shadow-md`
+**Confident, Structured, Reassuring, Clean, Professional.**
 
-### Navigation
-- Desktop: sidebar at `--sidebar-width`, fixed left
-- Mobile: bottom nav at `--bottom-nav-height`, fixed bottom
-- Active state: `--color-primary` indicator
+Every component and layout should feel intentional and organized. This is the digital equivalent of a firm, trustworthy handshake.
 
-### Forms
-- Labels above inputs, `--font-size-sm`, `--color-text-secondary`
-- Input height: `--touch-target-min`
-- Focus ring: `--color-primary` with 2px offset
-- Error messages: `--color-error`, `--font-size-sm`, below field
+## Animation & Motion Language
 
-## Generating CSS
+Motion should be **subtle, smooth, and professional**. It should enhance the user experience by providing feedback and guiding attention, never distracting.
 
-When the AI generates `prototype/shared/tokens.css`, it should output:
-- Shared tokens (typography, spacing, radius, layout) in `:root`
-- Light color tokens in `:root, [data-theme="light"]`
-- Dark color tokens in `[data-theme="dark"]`
-- An OS preference fallback in `@media (prefers-color-scheme: dark) { :root:not([data-theme]) { ... } }`
+-   **Page transitions**: A simple, quick `fade` is sufficient.
+-   **Scroll animations**: Gentle `fade-up` and `slide-in from bottom` for elements as they enter the viewport. Stagger animations for lists or card grids to create a pleasing reveal.
+-   **Hover effects**: On cards, a gentle `scale-up` and `shadow lift`. On links, a color shift to `accent-500`. On primary buttons, a subtle brightness shift.
+-   **Micro-interactions**: Form fields should get a soft `ring` of `primary-300` on focus. Accordions/menus should expand and collapse smoothly, not snap open.
+-   **Speed**: Smooth and reassuring. Use durations of `200ms` to `400ms`.
+-   **Easing**: `ease-in-out` for an elegant, professional feel.
 
-When it generates `components.css`, it should implement the component guidelines using semantic token names — never raw hex values. Components automatically adapt to light/dark because they reference tokens, not colors directly.
+**Actionable Tailwind Examples:**
+1.  **Card Hover:** `transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1`
+2.  **Button Hover:** `transition-colors duration-200 ease-in-out hover:bg-accent-600`
+3.  **Scroll-In Fade-Up (for use with Intersection Observer):** `transition-all duration-500 ease-in-out opacity-0 translate-y-4` (and a class that toggles to `opacity-100 translate-y-0`).
+
+## Layout Philosophy
+
+-   **Whitespace:** **Generous.** White space is the most important tool for creating a premium, organized, and calm aesthetic. Do not crowd elements. Let the content breathe.
+-   **Grid Rhythm:** Adhere to a **structured grid** (like a 12-column system) for primary content. This reinforces the feeling of order and professionalism. You can break the grid for visual interest with hero images or offset decorative elements, but the core text and UI should be aligned.
+-   **Image Treatment:** Images should be clean and well-composed. They can be used as full-bleed background heroes, contained within cards (`rounded-xl`), or placed in grid columns. When featuring people, ensure the photography is high-quality and authentic.
+-   **Section Rhythm:** Create a gentle rhythm by alternating section backgrounds between `surface-50` (Off-White) and `surface-100/200` (Light Gray). This visually separates content blocks without needing harsh dividers.
+
+## Photography & Image Style
+
+-   **Style:** **Authentic, human-centric, and professional.** The focus is on the *outcome* of good IT: productive people in clean, modern office environments feeling calm and focused.
+-   **Color Treatment:** Bright, natural, and warm. Avoid overly corporate, blue-filtered, or desaturated looks.
+-   **Subject Matter:**
+    -   **Primary:** Professional, warm photos of the Wimmer EDV team.
+    -   **Secondary:** People who look like their target clients (small business owners, office staff).
+    -   **Abstract/Icons:** Use clean, minimalist line-art icons to represent services. Avoid 3D or overly-stylized illustrations.
+
+## Inspiration References
+
+-   **Stripe (stripe.com):** For its impeccable typographic hierarchy, generous use of whitespace, and structured layouts. Notice how their CTAs use a clear accent color and how sections are cleanly divided.
+-   **Intercom (intercom.com):** For its excellent use of human-centric photography that feels authentic, not staged. Their messaging is clear, benefit-focused, and avoids jargon.
+-   **A-Team Systems (a-teamsystems.com):** As a competitor reference. They do a decent job with a clean, professional look. Our goal is to elevate this with a more sophisticated color palette, superior typography, and more authentic imagery.
+
+## Do's and Don'ts
+
+### DO:
+*   **Do use generous whitespace** to guide the eye and create a calm, premium feel.
+*   **Do lead with clear, benefit-focused headlines** that speak directly to the client's needs ("Focus on your business, not your IT").
+*   **Do use authentic photography** of the team and realistic client environments.
+*   **Do maintain a strict visual hierarchy.** The most important element on the page should be immediately obvious.
+*   **Do use the `accent` green sparingly** but effectively for primary calls-to-action to maximize its impact.
+
+### DON'T:
+*   **Don't use generic stock photos** (cheesy handshakes, server room clichés, glowing blue globes).
+*   **Don't clutter the page.** When in doubt, remove an element. Less is more.
+*   **Don't use overly complex or flashy animations.** Motion should be subtle and serve a purpose.
+*   **Don't use pure black (`#000000`) for text.** Use `surface-800` (`#1A202C`) for better readability.
+*   **Don't be afraid of empty space.** It is an active and powerful design element.
