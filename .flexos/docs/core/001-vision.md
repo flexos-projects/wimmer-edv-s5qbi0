@@ -1,60 +1,55 @@
 ---
-id: "001-vision"
-title: "Vision & Strategy"
 type: doc
 subtype: core
-status: draft
-sequence: 1
-tags: [vision, strategy, personas]
+title: 001 - Project Vision
 ---
 
-# Vision & Strategy
+### The Digital Transformation of Wimmer EDV
 
-> The north star document. Defines what this product is, who it's for, and why it matters. Everything else flows from here.
+This project will transform the Wimmer EDV website from a simple online business card into the most powerful lead generation and trust-building asset for the company. We will create a digital presence that not only looks professional but actively works to establish Wimmer EDV as the undisputed premier IT partner for SMEs in St. Pölten.
 
-## Vision Statement
+#### **The Transformation Story**
 
-A clear, aspirational statement about what this product will become. Not a feature list — a future state. What does the world look like when this product succeeds?
+*   **From:** An anonymous, dated, and functional brochure that lists services. It confirms the business exists but does little to persuade or differentiate.
+*   **To:** A confident, human-centric, and authoritative digital headquarters. A visitor will immediately understand that Wimmer EDV is not just *an* IT provider, but a **Gold-Certified, 5-star rated local expert** personally invested in their clients' success.
 
-## Mission
+#### **Target Audiences**
 
-The practical version of the vision. What does this product DO, day to day, for its users? One sentence that anyone on the team can repeat.
+We are speaking to two primary personas, both non-technical:
 
-## Problem
+1.  **"The Stressed Decision-Maker":** An office manager or business owner (CEO of a 15-person company) currently facing an IT crisis or frustrated with their current provider. They are looking for *immediate help* and *reassurance*. They need to know they've found competent, reliable experts who can solve their problem *fast*.
+2.  **"The Proactive Planner":** A business owner or manager looking to upgrade their systems, move to the cloud, or find a long-term IT partner. They are doing their research and comparing options. They need to see clear evidence of expertise, reliability, and long-term value.
 
-What pain point does this solve? Be specific — not "people need better tools" but "freelance photographers lose 3 hours per week chasing clients for gallery approvals." Include evidence if available.
+#### **The First 3-Second Feeling**
 
-## Solution
+Upon landing on the homepage, a visitor will feel a sense of **calm competence**. The clean design, prominent trust signals (Gold Partner logos, 5-star rating), and a professional photo of Thomas Wimmer will instantly convey: "You're in the right place. These are the experts. We can solve this."
 
-How does this product solve the problem? The elevator pitch. What's the core mechanism that makes things better?
+#### **Success Metrics That Matter**
 
-## Target Users
+Our success will not be measured by traffic, but by tangible business outcomes:
 
-### Primary Persona
+1.  **Increased Qualified Leads:** A measurable increase in contact form submissions for consultations and quotes from local SMEs.
+2.  **Higher Phone Call Volume:** Tracking calls originating from the website's prominent phone number.
+3.  **Improved Lead Quality:** Attracting clients who understand the value proposition and are looking for a true partner, not just the cheapest option.
+4.  **Ranking for High-Intent Keywords:** Achieving top-3 search rankings for critical local search terms.
 
-Describe the main user in detail — their role, frustrations, goals, technical comfort level, and what "success" looks like for them. Give them a name.
+#### **Content Strategy: From Brochure to Resource**
 
-### Secondary Personas
+The website will become a hub of expertise that demonstrates value before a potential client ever makes contact.
 
-Other user types who benefit from the product. Admins, managers, collaborators, viewers — whoever else interacts with the system.
+*   **Benefit-First Service Pages:** Each service will be presented as a solution to a business problem (e.g., "Protect Your Business" instead of "IT Security").
+*   **The "Why Us?" Pillar:** We will dedicate prime real estate to answering the question "Why Wimmer EDV?", focusing on the unique triad of Personal Accountability, Flawless Reputation, and Elite Certifications.
+*   **Client Success Stories:** We will evolve testimonials into brief, compelling case studies (Problem, Solution, Result) that allow potential clients to see themselves in the success of others.
+*   **Proactive Expertise Blog:** A simple blog sharing practical IT tips for SMEs (e.g., "3 Signs Your Business Has Outgrown Its IT," "Is Microsoft 365 Right for Your Team?"). This builds authority and provides SEO fuel.
 
-## Unique Value Proposition
+#### **SEO Ambitions**
 
-What makes this different from alternatives? Not just "better UI" — what's the structural advantage? Why will users switch from what they're doing now?
+Our goal is to dominate the local search landscape for high-intent commercial keywords. By launch, this site should be structured to own terms such as:
 
-## Success Metrics
+*   `IT Betreuung St. Pölten`
+*   `IT Service KMU Niederösterreich`
+*   `Microsoft 365 Partner St. Pölten`
+*   `IT Firma St. Pölten`
+*   `Computer Service für Firmen St. Pölten`
 
-How do we know this is working? Define 3-5 measurable outcomes:
-
-- **Activation:** (what does a successful first session look like?)
-- **Engagement:** (what does regular usage look like?)
-- **Retention:** (what keeps users coming back?)
-- **Growth:** (how does the product spread?)
-
-## Non-Goals
-
-Equally important: what is this product NOT? What features, markets, or approaches are explicitly out of scope? This prevents scope creep and keeps the team focused.
-
-## Competitive Landscape
-
-What alternatives exist? Direct competitors, indirect substitutes, and the "do nothing" option. Where does this product fit in the market?
+This vision elevates Wimmer EDV from being just another name in a directory to being the clear, trusted, and authoritative choice for IT partnership in their region.

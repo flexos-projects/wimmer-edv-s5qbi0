@@ -1,99 +1,68 @@
 ---
-id: "007-technical"
-title: "Technical Architecture"
 type: doc
 subtype: core
-status: draft
-sequence: 7
-tags: [technical, architecture, stack, deployment]
+title: 007 - Technical Architecture
 ---
 
-# Technical Architecture
+### Technical Specification & Architecture
 
-> How the product is built, deployed, and maintained. The engineer's reference document.
+This document outlines the technical stack, performance targets, and implementation details for the Wimmer EDV website redesign. The chosen stack prioritizes performance, security, SEO, and a modern development workflow.
 
-## Tech Stack
+---
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| Framework | Nuxt 4 | Full-stack Vue, SSR, file-based routing |
-| Database | Firestore | Real-time, serverless, scales automatically |
-| Auth | Firebase Auth | Email/password, social login, session management |
-| Hosting | Vercel | Edge deployment, preview deploys, serverless functions |
-| Storage | Vercel Blob | File uploads, images, assets |
-| Styling | UnoCSS / Tailwind | Utility-first, design token integration |
+**1. Core Technology Stack**
 
-## Architecture Overview
+*   **Framework:** **Astro**
+    *   **Rationale:** Astro is a static-first site generator that delivers exceptional performance by default (shipping zero JavaScript for static content). Its component-based architecture is ideal for building maintainable UIs. It's perfect for content-driven sites where speed and SEO are paramount.
+*   **Deployment Platform:** **Vercel**
+    *   **Rationale:** Vercel offers a seamless Git-based deployment workflow, global CDN for fast load times, automatic HTTPS, and serverless functions for handling backend tasks like form submissions. Its integration with Astro is flawless.
+*   **Content Management:** **Markdown Files & Git**
+    *   **Rationale:** For a site of this scale, a full-blown CMS is overkill. Content (services, testimonials, posts) will be managed as structured Markdown files within the Git repository. This approach is simple, version-controlled, and extremely fast.
 
-Describe the high-level architecture — client/server split, data flow, caching strategy.
+**2. Performance Targets**
 
-### Client
+The site must be exceptionally fast to provide a great user experience and boost SEO rankings.
 
-- Nuxt 4 SPA with SSR for public pages
-- Vue 3 Composition API throughout
-- State management via composables (not Pinia unless complex)
-- File-based routing with middleware for auth gates
+*   **Google Core Web Vitals:** All three metrics (LCP, FID, CLS) must score in the "Good" category on both mobile and desktop.
+*   **Load Time:** Target a Largest Contentful Paint (LCP) of under 1.5 seconds.
+*   **Page Weight:** Keep initial page loads under 500KB.
 
-### Server
+**3. SEO & Structured Data**
 
-- Nuxt server routes (server/api/)
-- Firebase Admin SDK for privileged operations
-- Server-side rendering for SEO-critical pages
-- Edge functions for API routes
+Technical SEO will be a foundational priority.
 
-### Data Flow
+*   **Structured Data (JSON-LD):** Implement schema markup for:
+    *   `LocalBusiness`: On all pages, detailing name, address, phone, opening hours, etc.
+    *   `Service`: On each service detail page.
+    *   `Review`: For each testimonial displayed.
+    *   `BreadcrumbList`: For clear site hierarchy.
+*   **Meta Tags:** All pages will have unique, SEO-optimized `title` and `meta description` tags. Open Graph (`og:`) tags will be implemented for rich social sharing.
+*   **Sitemap & Robots:** An automatically generated `sitemap.xml` will be submitted to search engines. A `robots.txt` file will be configured to allow crawling of all necessary assets.
+*   **Canonicals:** `rel="canonical"` tags will be used on all pages to prevent duplicate content issues.
 
-```
-Client → Nuxt Server Routes → Firestore
-         ↕                     ↕
-      Firebase Auth         Cloud Functions (if needed)
-```
+**4. Form Handling**
 
-## API Routes
+*   **Implementation:** Contact forms will be standard HTML forms. Submissions will be handled by a Vercel Serverless Function.
+*   **Process:** The function will receive the form data, perform basic validation, send a formatted email notification to Wimmer EDV, and can optionally post data to a CRM or Google Sheet. This avoids reliance on third-party form services and keeps data handling within our control.
+*   **Spam Protection:** A honeypot field and/or a service like Turnstile (Cloudflare's privacy-focused CAPTCHA alternative) will be used to prevent spam.
 
-List every API endpoint the product needs:
+**5. Image Optimization**
 
-| Method | Path | Purpose | Auth |
-|--------|------|---------|------|
-| POST | /api/auth/login | Authenticate user | No |
-| GET | /api/[resource] | List resources | Yes |
-| POST | /api/[resource] | Create resource | Yes |
-| (continue...) | | | |
+*   **Strategy:** We will leverage Astro's built-in `<Image />` component.
+*   **Features:**
+    *   **Automatic Resizing:** Generate multiple image sizes for different viewports.
+    *   **Modern Formats:** Automatically serve next-gen image formats like WebP or AVIF to supported browsers.
+    *   **Lazy Loading:** Images below the fold will be lazy-loaded by default.
+    *   **Alt Text:** All images will require descriptive `alt` text for accessibility and SEO.
 
-## Authentication
+**6. Analytics & Tracking**
 
-- **Method:** Firebase Auth (email/password + Google OAuth)
-- **Session:** HTTP-only cookie with Firebase session token
-- **Middleware:** `auth.ts` middleware checks session on protected routes
-- **Token refresh:** Automatic via Firebase SDK
+*   **Primary Analytics:** A privacy-focused analytics provider like Plausible or Fathom Analytics is recommended to respect user privacy and avoid the bloat of Google Analytics.
+*   **Google Search Console:** The site will be verified with Google Search Console to monitor indexing status, performance, and search queries.
+*   **Event Tracking:** Simple event tracking can be implemented for key conversions like form submissions and phone number clicks.
 
-## Environment Variables
+**7. Third-Party Integrations**
 
-| Variable | Purpose | Required |
-|----------|---------|----------|
-| `FIREBASE_PROJECT_ID` | Firebase project | Yes |
-| `FIREBASE_CLIENT_EMAIL` | Service account | Yes |
-| `FIREBASE_PRIVATE_KEY` | Service account | Yes |
-| (continue...) | | |
-
-## Deployment
-
-- **Production:** Vercel, auto-deploy from `main` branch
-- **Preview:** Vercel preview deploys on every PR
-- **Database:** Firestore production instance
-- **CI/CD:** GitHub Actions for linting, type-checking, tests
-
-## Performance Targets
-
-- **First Contentful Paint:** < 1.5s
-- **Time to Interactive:** < 3s
-- **Lighthouse Score:** > 90 (performance, accessibility)
-- **API Response Time:** < 200ms (p95)
-
-## Security Considerations
-
-- All API routes validate input (Zod schemas)
-- Firestore security rules enforce per-document access
-- CORS configured for production domain only
-- Rate limiting on auth endpoints
-- No secrets in client bundle
+*   **Google Business Profile:** The website will link to the GMB profile, and the address will be embedded using Google Maps.
+*   **Google Reviews:** A simple widget or a custom fetch script can be used to display a feed of the latest Google Reviews, loaded client-side to avoid impacting initial page load performance.
+*   **No Multilingual Requirement:** Based on the current data, the site will be single-language (German). The architecture can accommodate future language additions if needed.

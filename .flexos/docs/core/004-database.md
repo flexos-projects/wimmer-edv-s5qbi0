@@ -1,73 +1,78 @@
 ---
-id: "004-database"
-title: "Database & Data Model"
 type: doc
 subtype: core
-status: draft
-sequence: 4
-tags: [database, schema, collections, data]
+title: 004 - Content Model
 ---
 
-# Database & Data Model
+### Website Content Model
 
-> Every piece of data the product stores, how it's structured, and how it relates. This is the foundation for the backend.
+This document defines the structured content types required to power the Wimmer EDV website. This model ensures content is consistent, reusable, and optimized for both display and search engines (via structured data).
 
-## Database Choice
+---
 
-Which database and why. Default: Firestore (NoSQL, real-time, serverless). Document any reasons to deviate.
+**1. Collection: `Service`**
+*   **Purpose:** To define each core IT service offered. This allows for both a main services page and individual, detailed landing pages.
+*   **Fields:**
+    *   `title` (Text, Required): The name of the service (e.g., "IT Security").
+    *   `slug` (Text, Required): The URL-friendly version (e.g., `it-sicherheit`).
+    *   `icon` (Text): Name of an SVG icon to represent the service.
+    *   `summary` (Text, Required): A short, one-sentence description for use on overview pages.
+    *   `hero_image` (Image): A primary image for the service's detail page.
+    *   `content` (Markdown, Required): The full, benefit-driven description of the service for its detail page.
+    *   `related_certifications` (Relation): A link to entries in the `Certification` collection.
+    *   `seo_title` (Text): Custom SEO title for the page.
+    *   `seo_description` (Text): Custom meta description.
 
-## Collection Inventory
+**2. Collection: `Testimonial`**
+*   **Purpose:** To manage client reviews and testimonials for use throughout the site.
+*   **Fields:**
+    *   `quote` (Text, Required): The full text of the testimonial.
+    *   `author_name` (Text, Required): The name of the person giving the quote.
+    *   `author_company` (Text): The company the author works for.
+    *   `source` (Select, Required): Where the review came from (e.g., "Google," "Facebook," "Direct").
+    *   `rating` (Number): The star rating, from 1 to 5.
+    *   `is_featured` (Boolean): A toggle to mark testimonials for prominent placement (e.g., homepage).
 
-List every collection/table in the system with a one-line description:
+**3. Collection: `Certification`**
+*   **Purpose:** To manage partner certifications and logos as reusable assets.
+*   **Fields:**
+    *   `partner_name` (Text, Required): The name of the partner (e.g., "Microsoft").
+    *   `level` (Text, Required): The certification level (e.g., "Gold Partner").
+    *   `logo` (Image, Required): The official partner logo.
+    *   `partner_url` (URL): A link to the partner's website.
+    *   `display_order` (Number): To control the order in which logos are displayed.
 
-| Collection | Description | Primary Key |
-|-----------|-------------|-------------|
-| `users` | User accounts and profiles | auto-generated |
-| (add collections...) | | |
+**4. Collection: `CaseStudy` (Future, P2)**
+*   **Purpose:** To structure detailed client success stories.
+*   **Fields:**
+    *   `client_name` (Text, Required): The name of the client company.
+    *   `title` (Text, Required): A compelling headline for the story (e.g., "How Eder Ziviltechniker Achieved 99.9% Uptime").
+    *   `slug` (Text, Required): The URL-friendly version.
+    *   `summary` (Text, Required): A brief overview for index pages.
+    *   `problem` (Markdown, Required): A description of the client's challenge.
+    *   `solution` (Markdown, Required): A description of the solution Wimmer EDV implemented.
+    *   `result` (Markdown, Required): The tangible, positive outcomes for the client.
+    *   `testimonial` (Relation): A link to a `Testimonial` entry from this client.
+    *   `related_services` (Relation): Links to `Service` entries used in the project.
 
-## Schema Definitions
+**5. Collection: `Post` (Future, P2)**
+*   **Purpose:** To manage entries for the blog/news section.
+*   **Fields:**
+    *   `title` (Text, Required): The blog post title.
+    *   `slug` (Text, Required): The URL-friendly version.
+    *   `publish_date` (Date, Required): The date the post was published.
+    *   `author` (Relation): Link to a `TeamMember` (initially just Thomas Wimmer).
+    *   `summary` (Text, Required): A short excerpt for the blog index page.
+    *   `featured_image` (Image): The main image for the post.
+    *   `content` (Markdown, Required): The full body of the article.
+    *   `tags` (List of Text): Keywords for categorization (e.g., "Security," "Microsoft 365").
 
-For each collection, define the full schema:
-
-### `users`
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | yes | Auto-generated document ID |
-| `email` | string | yes | User's email address |
-| `displayName` | string | yes | Display name |
-| `createdAt` | timestamp | yes | Account creation time |
-| `updatedAt` | timestamp | yes | Last modification time |
-
-(Continue for each collection...)
-
-## Relationships
-
-How do collections reference each other? Document every foreign key relationship:
-
-- `posts.userId` → references `users.id` (one-to-many: one user has many posts)
-- (continue for all relationships...)
-
-## Access Patterns
-
-What queries does the application need? This determines indexes and security rules:
-
-| Query | Collection | Filters | Sort | Used By |
-|-------|-----------|---------|------|---------|
-| Get user's posts | `posts` | `userId == x` | `createdAt desc` | Dashboard |
-| (add queries...) | | | | |
-
-## Security Rules
-
-Who can read/write what? Define per-collection:
-
-- **users:** Owner can read/write own doc. Others can read displayName only.
-- (continue for each collection...)
-
-## Indexes
-
-Based on access patterns, which composite indexes are needed?
-
-## Data Migration
-
-If this project was imported, document any data migration needs. What data exists in the old system? How does it map to the new schema?
+**6. Singleton: `GlobalSettings`**
+*   **Purpose:** To store site-wide information that is used in multiple places, like the header and footer.
+*   **Fields:**
+    *   `company_name` (Text): Wimmer EDV GmbH
+    *   `phone_number` (Text): The primary contact phone number.
+    *   `email_address` (Text): The primary contact email.
+    *   `address` (Text): The full company address.
+    *   `google_maps_url` (URL): Link to the Google Business Profile.
+    *   `facebook_url` (URL): Link to the company Facebook page.

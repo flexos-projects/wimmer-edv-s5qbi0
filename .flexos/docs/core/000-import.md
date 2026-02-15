@@ -1,41 +1,58 @@
 ---
-id: "000-import"
-title: "Project Origin"
 type: doc
 subtype: core
-status: draft
-sequence: 0
-tags: [origin, provenance]
+title: 000 - Source Data Summary
 ---
 
-# Project Origin
+### Project Source Data: Wimmer EDV GmbH
 
-> Every FlexOS project has an origin story. This document records how the project was created and what source material informed it.
+This document summarizes the verified factual basis for the website redesign project. All strategies and creative decisions will be grounded in this data.
 
-## Source
+#### **1. Core Business Identity**
 
-Describe how this project came into existence. Was it imagined from a description? Imported from an existing GitHub repository? Scraped from a live website? Created from a template?
+*   **Legal Name:** Wimmer EDV GmbH
+*   **Principal & Owner:** Thomas Wimmer
+*   **Location:** Dr.-Adolf-Schärf-Straße 10, A-3107 St. Pölten, Austria
+*   **Legal Inception:** 2019 (as GmbH)
+*   **Founder's Experience:** 10+ years in the IT industry prior to founding. This is a critical data point for establishing credibility beyond the company's legal age.
 
-- **Type:** imagination | github_import | website_scrape | blank | template
-- **Source:** (URL, description, or "from scratch")
-- **Date:** (when the project was created)
+#### **2. Service Offerings**
 
-## Original Input
+The business operates on four clearly defined service pillars.
 
-Capture the raw input that started this project — the brain dump, the GitHub URL, the website, or the template name. This is the seed everything else grew from.
+*   **IT Security:** Firewall, Antivirus, Backup solutions.
+*   **Cloud Solutions:** Microsoft 365, Hosted Exchange, Cloud Backup.
+*   **IT Service & Support:** Consulting, Maintenance, Remote & On-site Support.
+*   **Hardware & Software:** Sales and support for PCs, Servers, Networks, peripherals.
 
-## What Was Learned
+#### **3. Target Audience & Market**
 
-If this project was imported or scraped, summarize the key insights extracted from the source material. What was the original project trying to be? What worked? What was missing?
+*   **Primary Audience:** Small and Medium-sized Enterprises (SMEs / KMU).
+*   **Geographic Focus:** St. Pölten and the surrounding Lower Austria region.
+*   **Client Profile:** Businesses requiring a comprehensive, outsourced IT partner.
 
-## Decisions Made
+#### **4. Verifiable Trust Assets (Content Goldmine)**
 
-Record any early decisions about scope, direction, or technology that were made during project creation. Why was this approach chosen over alternatives?
+The project begins with an exceptional collection of high-value, verifiable trust signals.
 
-## Provenance Chain
+*   **Public Reputation:**
+    *   **Google:** Perfect 5.0-star rating (11 reviews).
+    *   **Facebook:** Perfect 5.0-star rating (6 opinions).
+    *   **Key Themes in Reviews:** Competence, speed, reliability, friendliness, solution-oriented.
+*   **Elite Industry Certifications:**
+    *   **Microsoft Gold Partner:** A top-tier, difficult-to-achieve certification.
+    *   **Veeam ProPartner Gold:** Demonstrates elite expertise in modern backup and data recovery.
+    *   **Sophos Silver Partner:** Proven expertise in cybersecurity.
+*   **Named Client Testimonials:** Existing "Referenzen" page features quotes from established clients like Scheuringer & Partner and Eder Ziviltechniker.
 
-If this project builds on previous work, link to the sources:
+#### **5. Identified Gaps & Missing Data**
 
-- **Parent project:** (if forked or imported from another FlexOS project)
-- **External sources:** (GitHub repos, websites, documents that informed this)
-- **AI models used:** (which models generated the initial content)
+The following critical content and assets are currently missing and must be addressed in the redesign project.
+
+*   **Human Element:** No photos or biographical information for Thomas Wimmer or any team members. This is the single largest gap, as the business is built on his personal expertise.
+*   **Visual Assets:** Lack of high-quality, authentic photography of the office, team, or client environments. The project will require a professional photoshoot.
+*   **Case Studies:** No structured problem/solution/result narratives that demonstrate the value of their work in a compelling story format.
+*   **Benefit-Oriented Copy:** Current service descriptions are feature-based ("We sell firewalls") rather than benefit-based ("We protect your business from costly data breaches").
+*   **Systematic Review Generation:** While review quality is perfect, the quantity is low. There is no active process for encouraging satisfied clients to leave public reviews.
+
+This summary confirms that Wimmer EDV's core strengths are its verifiable expertise (certifications) and flawless local reputation (reviews), centered on the personal accountability of its founder, Thomas Wimmer. The redesign's primary function is to bring these powerful assets to the forefront.
