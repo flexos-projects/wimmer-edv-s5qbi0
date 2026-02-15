@@ -23,7 +23,7 @@ Based on the project context (`docs/core`, `specs`, `imports`), the following in
 - [x] Google Maps / OpenStreetMap embed (for Contact page)
 - [x] Newsletter signup (for P3 Resource Center, likely a Vercel function to email service)
 - [x] Calendar/booking (P3: Online Appointment Booking, e.g., Calendly embed)
-- [ ] E-commerce
+- [ ] E-commerce (no explicit feature for this project)
 - [ ] Client portal / login area (no explicit feature for this project)
 - [x] Blog with RSS feed (P2: Expertise Hub)
 - [ ] Multilingual (i18n routing — not required initially, project is German-only)
