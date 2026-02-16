@@ -4,17 +4,15 @@ subtype: reference
 title: Astro 5 Baseline Reference
 ---
 
-Excellent. Here is the definitive Astro 5 baseline reference document, meticulously crafted for an AI code generator. It is verified against the latest documentation and best practices for a modern, production-ready 2025-2026 Astro project.
-
 ---
 
-# Astro 5 Baseline Reference
+# Astro 5 + Tailwind CSS 4 Baseline Reference
 
-This document provides the exact, production-quality baseline for building modern websites with Astro 5 and Tailwind CSS 4. The AI builder should use these patterns and configurations as the source of truth.
+This document provides the exact, production-quality baseline for building modern websites with Astro 5 and Tailwind CSS 4. The AI builder must use these patterns and configurations as the source of truth.
 
 ## `package.json`
 
-This file defines the project's dependencies and scripts. Versions are set to the latest stable or long-term support releases expected for a new project.
+This file defines the project's dependencies and scripts. Versions are set to the latest stable releases expected for a new project in this timeframe.
 
 ```json
 {
@@ -31,13 +29,13 @@ This file defines the project's dependencies and scripts. Versions are set to th
   },
   "dependencies": {
     "@astrojs/check": "^0.8.2",
-    "@astrojs/sitemap": "^3.1.6",
-    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/sitemap": "^3.7.0",
     "@astrojs/vercel": "^7.7.2",
-    "astro": "^4.12.2",
+    "@tailwindcss/vite": "^4.0.0-alpha.17",
+    "astro": "^5.17.0",
     "astro-icon": "^1.1.0",
-    "sharp": "^0.33.4",
-    "tailwindcss": "^4.0.0-alpha.13",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^4.0.0-alpha.17",
     "typescript": "^5.5.3"
   }
 }
@@ -45,13 +43,15 @@ This file defines the project's dependencies and scripts. Versions are set to th
 
 ## `astro.config.mjs`
 
-This is the main configuration file for the Astro project. It integrates Tailwind CSS, the sitemap generator, and the Vercel deployment adapter.
+This is the main configuration file for the Astro project. It integrates the Tailwind CSS Vite plugin, the sitemap generator, and the Vercel deployment adapter.
+
+**Note:** For Tailwind CSS 4, we use the `@tailwindcss/vite` plugin directly, not `@astrojs/tailwind`.
 
 ```javascript
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel/serverless';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
@@ -60,15 +60,11 @@ export default defineConfig({
   
   // Integrations are Astro's way of adding new features.
   integrations: [
-    tailwind({
-      // Disable Tailwind's base styles to use our own `src/styles/global.css`.
-      applyBaseStyles: false,
-    }), 
     sitemap()
   ],
   
   // The Vercel adapter is needed for server-side rendering (SSR) or API endpoints.
-  // It enables Vercel's Edge Image Optimization via the `imageService` flag.
+  // It enables Vercel's Image Optimization via the `imageService` flag.
   output: 'server',
   adapter: vercel({
     imageService: true,
@@ -80,99 +76,92 @@ export default defineConfig({
       entry: 'astro/assets/services/sharp',
     },
   },
+
+  // Vite plugins are used for advanced integrations like Tailwind CSS 4.
+  vite: {
+    plugins: [
+      tailwindcss(),
+    ],
+  },
 });
 ```
 
-## `tailwind.config.mjs`
+## `src/styles/global.css`
 
-Tailwind CSS v4 configuration. It defines content paths for Astro and extends the theme with custom tokens from the project's design system.
+This is the central stylesheet. For Tailwind CSS 4, it's also the **configuration file**. The `@theme` block replaces `tailwind.config.mjs`.
 
-```javascript
-import plugin from 'tailwindcss/plugin';
+```css
+/*
+  Import Tailwind's base, components, and utilities.
+  This single line is the core of Tailwind CSS 4.
+*/
+@import 'tailwindcss';
 
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-  ],
-  theme: {
-    extend: {
-      // These tokens are derived from `.flexos/design/design-system.md`
-      colors: {
-        primary: {
-          50: '#EAF0F6',
-          100: '#D5E1ED',
-          200: '#ACC3DB',
-          300: '#82A5CA',
-          400: '#5987B8',
-          500: '#446E9B',
-          600: '#2D557F',
-          700: '#2D3748', // Base: Slate Blue
-          800: '#202835',
-          900: '#161C24',
-        },
-        accent: {
-          500: '#38A169', // Base: Tech Green
-          600: '#2F855A',
-        },
-        surface: {
-          50: '#F7FAFC',   // Off-White (Page Background)
-          100: '#EDF2F7',
-          200: '#E2E8F0',  // Light Gray (Borders, Cards)
-          800: '#1A202C',  // Dark Text
-        },
-        error: '#C53030',
-      },
-      fontFamily: {
-        // Sets "Inter" as the default sans-serif font.
-        sans: ['Inter', 'sans-serif'],
-      },
-      fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
-        'base': ['1rem', { lineHeight: '1.6' }],
-        'lg': ['1.125rem', { lineHeight: '1.75rem' }],
-        'xl': ['1.25rem', { lineHeight: '1.75rem' }],
-        '2xl': ['1.5rem', { lineHeight: '2rem' }],
-        '3xl': ['1.875rem', { lineHeight: '1.4' }],
-        '4xl': ['2.25rem', { lineHeight: '1.3' }],
-        '5xl': ['3rem', { lineHeight: '1.2' }],
-        '6xl': ['3.75rem', { lineHeight: '1.1' }],
-      },
-      transitionTimingFunction: {
-        'in-out': 'ease-in-out',
-      },
-    },
-  },
-  plugins: [],
+/*
+  The @theme block is where all custom design tokens are defined.
+  This replaces the `theme` object from the old tailwind.config.js file.
+  These values are derived from `.flexos/design/design-system.md`.
+*/
+@theme {
+  --color-primary-50: #EAF0F6;
+  --color-primary-100: #D5E1ED;
+  --color-primary-200: #ACC3DB;
+  --color-primary-300: #82A5CA;
+  --color-primary-400: #5987B8;
+  --color-primary-500: #446E9B;
+  --color-primary-600: #2D557F;
+  --color-primary-700: #2D3748; /* Base: Slate Blue */
+  --color-primary-800: #202835;
+  --color-primary-900: #161C24;
+
+  --color-accent-500: #38A169; /* Base: Tech Green */
+  --color-accent-600: #2F855A;
+
+  --color-surface-50: #F7FAFC;   /* Off-White (Page Background) */
+  --color-surface-100: #EDF2F7;
+  --color-surface-200: #E2E8F0;  /* Light Gray (Borders, Cards) */
+  --color-surface-800: #1A202C;  /* Dark Text */
+
+  --color-error: #C53030;
+
+  --font-sans: 'Inter', sans-serif;
+  
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-lg: 1.125rem;  /* 18px */
+  --font-size-xl: 1.25rem;   /* 20px */
+  --font-size-2xl: 1.5rem;   /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+  --font-size-4xl: 2.25rem;  /* 36px */
+  --font-size-5xl: 3rem;     /* 48px */
+  --font-size-6xl: 3.75rem;  /* 60px */
+
+  --line-height-xs: 1rem;
+  --line-height-sm: 1.25rem;
+  --line-height-base: 1.6;
+  --line-height-lg: 1.75rem;
+  --line-height-xl: 1.75rem;
+  --line-height-2xl: 2rem;
+  --line-height-3xl: 1.4;
+  --line-height-4xl: 1.3;
+  --line-height-5xl: 1.2;
+  --line-height-6xl: 1.1;
+  
+  --transition-timing-function-in-out: ease-in-out;
+}
+
+/* Base styles applied globally using Tailwind's `@apply` */
+body {
+  @apply bg-surface-50 font-sans text-surface-800 antialiased;
 }
 ```
 
 ## Key Astro Patterns
 
-### `.astro` Component Syntax
-
-Astro components consist of a JavaScript/TypeScript frontmatter section for logic and an HTML-like template for markup.
-
-```astro
----
-// src/components/Welcome.astro
-interface Props {
-  name: string;
-}
-
-const { name } = Astro.props;
-const message = `Welcome to the ${name} website!`;
----
-<div class="p-8 bg-surface-100 rounded-lg">
-  <h1 class="text-4xl font-bold text-primary-700">{message}</h1>
-  <p class="mt-4 text-lg text-surface-800">This is a reusable Astro component.</p>
-</div>
-```
-
 ### Layout Pattern (`src/layouts/BaseLayout.astro`)
 
-Layouts are Astro components that wrap page content. The `<slot />` element is where the page content will be injected.
+Layouts wrap page content. The `<slot />` element is where page content is injected. This example includes font preloading, `ViewTransitions`, and the reusable SEO component.
 
 ```astro
 ---
@@ -193,66 +182,43 @@ const { title, description, ogImage } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preload" href="/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <SEO title={title} description={description} ogImage={ogImage} />
     <ViewTransitions />
   </head>
-  <body class="bg-surface-50 font-sans antialiased text-surface-800">
-    <!-- Header, Footer, etc. would go here -->
-    <main id="main-content">
+  <body class="min-h-screen flex flex-col">
+    <!-- Header, etc. would go here -->
+    <main id="main-content" class="flex-grow">
       <slot />
     </main>
+    <!-- Footer, etc. would go here -->
   </body>
 </html>
 ```
 
-### Client-Side JS with `<script>` & Islands
+### `.astro` Component Syntax
 
-Astro renders HTML on the server by default. To add client-side interactivity, use a standard `<script>` tag or an Astro "island" with a `client:*` directive.
+Astro components use a familiar HTML-like syntax with a JavaScript/TypeScript "frontmatter" code fence for logic.
 
 ```astro
 ---
-// src/components/InteractiveCounter.astro
+// src/components/Welcome.astro
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+const message = `Willkommen auf der ${name} Webseite!`;
 ---
-<!-- This component becomes an interactive "island" on the page -->
-<div id="counter-wrapper" class="flex items-center gap-4 p-4 border rounded-lg">
-  <button id="decrement" class="btn btn-secondary">-</button>
-  <span id="count" class="text-2xl font-bold">0</span>
-  <button id="increment" class="btn btn-primary">+</button>
+<div class="p-8 bg-surface-100 rounded-lg">
+  <h1 class="font-bold text-4xl text-primary-700">{message}</h1>
+  <p class="mt-4 text-lg text-surface-800">Dies ist eine wiederverwendbare Astro-Komponente.</p>
 </div>
-
-<!-- The script only runs on the client, once this component is visible -->
-<script>
-  document.addEventListener('astro:page-load', () => {
-    const wrapper = document.getElementById('counter-wrapper');
-    if (!wrapper) return; // Ensure script doesn't run if component isn't on page
-
-    const decrementBtn = wrapper.querySelector('#decrement');
-    const incrementBtn = wrapper.querySelector('#increment');
-    const countSpan = wrapper.querySelector('#count');
-    
-    let count = 0;
-
-    const updateCount = () => {
-      countSpan.textContent = count.toString();
-    };
-
-    decrementBtn.addEventListener('click', () => {
-      count--;
-      updateCount();
-    });
-
-    incrementBtn.addEventListener('click', () => {
-      count++;
-      updateCount();
-    });
-  });
-</script>
 ```
 
-### Image Optimization (`<Image />`)
+### Image Optimization (`astro:assets`)
 
-Use Astro's built-in `<Image />` component to handle image optimization automatically. **Images must be imported from `src/assets`.**
+Use the `<Image />` and `<Picture />` components from `astro:assets` for automatic optimization. **Images must be imported from `src/assets`.**
 
 ```astro
 ---
@@ -263,7 +229,7 @@ import founderPhoto from '../assets/images/thomas-wimmer.jpg';
 <div class="max-w-sm rounded-xl overflow-hidden shadow-lg bg-white">
   <Image 
     src={founderPhoto}
-    alt="Thomas Wimmer, founder of Wimmer EDV"
+    alt="Thomas Wimmer, Gründer von Wimmer EDV"
     widths={[200, 400, 800]}
     sizes="(max-width: 640px) 100vw, 384px"
     format="webp"
@@ -272,17 +238,17 @@ import founderPhoto from '../assets/images/thomas-wimmer.jpg';
   <div class="px-6 py-4">
     <div class="font-bold text-xl mb-2 text-primary-700">Thomas Wimmer</div>
     <p class="text-surface-800 text-base">
-      Founder & CEO with over 10 years of experience in the IT industry.
+      Gründer & Geschäftsführer mit über 10 Jahren Erfahrung in der IT-Branche.
     </p>
   </div>
 </div>
 ```
 
-### Content Collections
+### Content Collections (Astro 5)
 
-Manage content like blog posts or services in `src/content/` as Markdown files with type-safe frontmatter.
+Manage content in `src/content/` as Markdown or data files with type-safe frontmatter defined in the project root.
 
-**1. Define Schema (`src/content/config.ts`)**
+**1. Define Schema (`src/content.config.ts`)**
 ```typescript
 import { defineCollection, z } from 'astro:content';
 
@@ -305,14 +271,14 @@ export const collections = {
 **2. Create Content (`src/content/blog/first-post.md`)**
 ```markdown
 ---
-title: "Why Proactive IT Management is Crucial"
-description: "Discover how proactive IT support can save your business time and money by preventing issues before they happen."
+title: "Warum Proaktives IT-Management Entscheidend ist"
+description: "Entdecken Sie, wie proaktiver IT-Support Ihrem Unternehmen Zeit und Geld spart, indem er Probleme verhindert, bevor sie auftreten."
 publishDate: 2024-10-26
 author: "Thomas Wimmer"
-tags: ["IT Support", "Cybersecurity", "Best Practices"]
+tags: ["IT-Support", "Cybersecurity", "Best Practices"]
 ---
 
-Proactive IT management is a game-changer for small and medium-sized businesses...
+Proaktives IT-Management ist ein Game-Changer für kleine und mittelständische Unternehmen...
 ```
 
 **3. Query and Render (`src/pages/aktuelles/index.astro`)**
@@ -344,8 +310,9 @@ Generate pages dynamically from your content collections.
 
 ```astro
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');
@@ -355,13 +322,17 @@ export async function getStaticPaths() {
   }));
 }
 
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
 const { post } = Astro.props;
 const { Content } = await post.render();
 ---
 <BaseLayout title={post.data.title} description={post.data.description}>
   <article class="prose lg:prose-xl mx-auto py-20 px-4">
     <h1>{post.data.title}</h1>
-    <p class="text-sm text-surface-600">Published on {post.data.publishDate.toDateString()}</p>
+    <p class="text-sm text-surface-600">Veröffentlicht am {post.data.publishDate.toLocaleDateString('de-DE')}</p>
     <Content />
   </article>
 </BaseLayout>
@@ -375,27 +346,25 @@ Create serverless functions for handling tasks like form submissions.
 import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request }) => {
-  const data = await request.formData();
-  const name = data.get('name');
-  const email = data.get('email');
-  const message = data.get('message');
+  try {
+    const data = await request.formData();
+    const name = data.get('name');
+    const email = data.get('email');
+    const message = data.get('message');
 
-  // Basic validation
-  if (!name || !email || !message) {
-    return new Response(
-      JSON.stringify({ message: "Missing required fields" }),
-      { status: 400 }
-    );
+    // Basic validation
+    if (!name || !email || !message) {
+      return new Response(JSON.stringify({ message: "Fehlende Pflichtfelder" }), { status: 400 });
+    }
+
+    // TODO: Send email using a service like Resend, Nodemailer, etc.
+    console.log({ name, email, message });
+
+    // Return a success response
+    return new Response(JSON.stringify({ message: "Vielen Dank für Ihre Nachricht!" }), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ message: "Serverfehler" }), { status: 500 });
   }
-
-  // TODO: Send email using a service like Resend, Nodemailer, etc.
-  console.log({ name, email, message });
-
-  // Return a success response
-  return new Response(
-    JSON.stringify({ message: "Thank you for your message!" }),
-    { status: 200 }
-  );
 };
 ```
 
@@ -403,7 +372,7 @@ export const POST: APIRoute = async ({ request }) => {
 
 ### Reusable SEO Component (`src/components/SEO.astro`)
 
-A single component to manage all critical meta tags.
+A single component to manage all critical meta tags and structured data.
 
 ```astro
 ---
@@ -422,6 +391,7 @@ const imageURL = new URL(ogImage || '/default-og-image.png', Astro.site).toStrin
 ---
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
+<meta name="generator" content={Astro.generator} />
 
 <!-- Open Graph -->
 <meta property="og:title" content={fullTitle} />
@@ -429,6 +399,7 @@ const imageURL = new URL(ogImage || '/default-og-image.png', Astro.site).toStrin
 <meta property="og:image" content={imageURL} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:type" content="website" />
+<meta property="og:locale" content="de_AT" />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
@@ -442,7 +413,7 @@ const imageURL = new URL(ogImage || '/default-og-image.png', Astro.site).toStrin
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" is:inline>
   {
-    "@context": "http://schema.org",
+    "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "Wimmer EDV GmbH",
     "url": "https://www.wimmer-edv.at",
@@ -454,7 +425,9 @@ const imageURL = new URL(ogImage || '/default-og-image.png', Astro.site).toStrin
       "postalCode": "3107",
       "addressCountry": "AT"
     },
-    "telephone": "+43-XXX-XXXXXX"
+    "telephone": "+43-XXX-XXXXXX",
+    "priceRange": "$$",
+    "openingHours": "Mo-Fr 08:00-17:00"
   }
 </script>
 ```
@@ -474,7 +447,7 @@ Sitemap: https://www.wimmer-edv.at/sitemap-index.xml
 
 ## Deployment (Vercel)
 
-1.  **Adapter:** The `@astrojs/vercel/serverless` adapter is already configured in `astro.config.mjs`. This handles both static assets and serverless API routes.
+1.  **Adapter:** The `@astrojs/vercel/serverless` adapter is already configured in `astro.config.mjs`. This handles static assets, server-side rendering, and serverless API routes.
 2.  **`vercel.json`:** This file is generally **not required** for a standard Astro deployment on Vercel. Vercel's build output settings automatically detect Astro projects. Create it only for custom configurations like redirects or headers.
 3.  **Environment Variables:**
     *   Go to your Vercel Project > Settings > Environment Variables.
