@@ -1,0 +1,36 @@
+/*
+  This file is for global styles and Tailwind CSS directives.
+  It follows the design system specified in .flexos/design/design-system.md.
+*/
+
+/* 1. Font Imports
+/* We self-host the Inter variable font for performance and privacy.
+/* -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-Variable.woff2') format('woff2');
+}
+
+/* 2. Tailwind CSS Directives
+/* These are required for Tailwind to work correctly.
+/* -------------------------------------------------------------------------- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 3. Base Styles
+/* We apply base styles to the html and body tags using @layer for proper CSS ordering.
+/* This ensures they can be overridden by utility classes.
+/* -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-surface-50 font-sans text-surface-800 antialiased;
+  }
+}

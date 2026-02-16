@@ -1,0 +1,104 @@
+```astro
+---
+import type { GetImageResult } from 'astro:assets';
+
+// Define the properties the SEO component accepts.
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string | GetImageResult;
+  canonicalURL?: URL | string;
+  noindex?: boolean;
+  nofollow?: boolean;
+}
+
+const { 
+  title, 
+  description, 
+  ogImage,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site),
+  noindex = false,
+  nofollow = false
+} = Astro.props;
+
+// Define site-wide constants
+const siteTitle = "Wimmer EDV | Ihr Gold-Zertifizierter IT-Partner in St. Pölten";
+const fullTitle = `${title} | ${siteTitle}`;
+
+// Construct the full Open Graph image URL
+const imageSrc = (typeof ogImage === 'string' ? ogImage : ogImage?.src) ?? '/og-image-default.jpg';
+const imageURL = new URL(imageSrc, Astro.site).toString();
+
+// Construct robots tag content
+const robotsContent = [
+  noindex && 'noindex',
+  nofollow && 'nofollow'
+].filter(Boolean).join(', ');
+---
+<!-- Primary Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Robots Meta Tag -->
+{robotsContent && <meta name="robots" content={robotsContent} />}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name" content="Wimmer EDV GmbH" />
+<meta property="og:locale" content="de_AT" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" is:inline>
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Wimmer EDV GmbH",
+    "image": "https://www.wimmer-edv.at/logo.svg",
+    "@id": "https://www.wimmer-edv.at",
+    "url": "https://www.wimmer-edv.at",
+    "telephone": "+43274221551",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Dr.-Adolf-Schärf-Straße 10",
+      "addressLocality": "St. Pölten",
+      "postalCode": "3107",
+      "addressCountry": "AT"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 48.221580,
+      "longitude": 15.632290
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "08:00",
+      "closes": "17:00"
+    },
+    "sameAs": [
+      "https://www.facebook.com/wimmeredv/"
+    ]
+  }
+</script>
+```

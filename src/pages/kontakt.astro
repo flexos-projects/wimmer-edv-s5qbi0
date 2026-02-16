@@ -1,0 +1,98 @@
+```astro
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Section from '../../components/Section.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { Icon } from 'astro-icon/components';
+
+const seo = {
+  title: "Kontakt zu Wimmer EDV | Ihr IT-Partner in St. Pölten",
+  description: "Nehmen Sie Kontakt auf mit Wimmer EDV in St. Pölten. Telefon, E-Mail, Adresse und Kontaktformular für Ihre IT-Anfragen. Wir helfen gerne."
+};
+
+const contactDetails = {
+  address: "Dr.-Adolf-Schärf-Straße 10, 3107 St. Pölten, Austria",
+  phone: "+43 2742 86160",
+  email: "office@wimmer-edv.at",
+  mapsLink: "https://www.google.com/maps/search/?api=1&query=Wimmer+EDV+Dr.-Adolf-Schärf-Straße+10+3107+St.+Pölten",
+  mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2654.582846877028!2d15.6322849!3d48.2144883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47727a1928a42163%3A0x683b5c2a7c4f4b11!2sWimmer%20EDV%20GmbH!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+};
+---
+
+<BaseLayout title={seo.title} description={seo.description}>
+  <Hero
+    variant="minimal"
+    title="Kontakt aufnehmen"
+    subtitle="Bereit, Ihre IT auf das nächste Level zu heben? Wir sind hier, um Ihnen zu helfen. Kontaktieren Sie uns für eine unverbindliche Erstberatung."
+  />
+
+  <Section background="surface-50" padding="py-24 md:py-32">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      
+      <!-- Left Column: Contact Details & Map -->
+      <div class="space-y-12">
+        <div>
+          <h2 class="text-3xl font-bold text-primary-700 mb-4">So erreichen Sie uns</h2>
+          <p class="text-lg text-surface-600">
+            Wir freuen uns darauf, von Ihnen zu hören. Wählen Sie den für Sie bequemsten Weg, um mit unserem Expertenteam in Kontakt zu treten.
+          </p>
+        </div>
+
+        <address class="not-italic space-y-6">
+          <a href={contactDetails.mapsLink} target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 group">
+            <div class="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center group-hover:bg-primary-100 transition-colors duration-300 ease-in-out">
+              <Icon name="lucide:map-pin" class="w-6 h-6 text-primary-600" />
+            </div>
+            <div>
+              <h3 class="font-semibold text-primary-800">Adresse</h3>
+              <p class="text-surface-600 group-hover:text-accent-600 transition-colors duration-300 ease-in-out underline-offset-4 group-hover:underline">{contactDetails.address}</p>
+            </div>
+          </a>
+          
+          <a href={`tel:${contactDetails.phone.replace(/\s/g, '')}`} class="flex items-start gap-4 group">
+            <div class="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center group-hover:bg-primary-100 transition-colors duration-300 ease-in-out">
+              <Icon name="lucide:phone" class="w-6 h-6 text-primary-600" />
+            </div>
+            <div>
+              <h3 class="font-semibold text-primary-800">Telefon</h3>
+              <p class="text-surface-600 group-hover:text-accent-600 transition-colors duration-300 ease-in-out underline-offset-4 group-hover:underline">{contactDetails.phone}</p>
+            </div>
+          </a>
+
+          <a href={`mailto:${contactDetails.email}`} class="flex items-start gap-4 group">
+            <div class="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center group-hover:bg-primary-100 transition-colors duration-300 ease-in-out">
+              <Icon name="lucide:mail" class="w-6 h-6 text-primary-600" />
+            </div>
+            <div>
+              <h3 class="font-semibold text-primary-800">E-Mail</h3>
+              <p class="text-surface-600 group-hover:text-accent-600 transition-colors duration-300 ease-in-out underline-offset-4 group-hover:underline">{contactDetails.email}</p>
+            </div>
+          </a>
+        </address>
+
+        <div class="relative w-full pt-[75%] rounded-xl shadow-md overflow-hidden border border-surface-200">
+          <iframe
+            src={contactDetails.mapsEmbed}
+            class="absolute inset-0 w-full h-full border-0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Wimmer EDV Standort">
+          </iframe>
+        </div>
+      </div>
+      
+      <!-- Right Column: Contact Form -->
+      <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-surface-200">
+        <h2 class="text-3xl font-bold text-primary-700 mb-4">Schreiben Sie uns eine Nachricht</h2>
+        <p class="text-lg text-surface-600 mb-8">
+          Füllen Sie das Formular aus und wir melden uns so schnell wie möglich bei Ihnen.
+        </p>
+        <ContactForm client:load />
+      </div>
+
+    </div>
+  </Section>
+</BaseLayout>
+```

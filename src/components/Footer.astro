@@ -1,0 +1,137 @@
+```astro
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import WimmerLogoLight from '../assets/images/wimmer-edv-logo-light.svg';
+
+const certifications = await getCollection('certifications');
+const sortedCertifications = certifications.sort((a, b) => (a.data.display_order || 99) - (b.data.display_order || 99));
+
+const currentYear = new Date().getFullYear();
+
+const quickLinks = [
+  { text: 'Startseite', href: '/' },
+  { text: 'IT-Leistungen', href: '/it-leistungen' },
+  { text: 'Warum Wir', href: '/warum-wir' },
+  { text: 'Über Uns', href: '/ueber-uns' },
+  { text: 'Kontakt', href: '/kontakt' },
+];
+
+const serviceLinks = [
+    { text: 'IT-Sicherheit', href: '/it-leistungen/it-sicherheit' },
+    { text: 'Cloud-Lösungen', href: '/it-leistungen/cloud-loesungen' },
+    { text: 'IT-Service & Support', href: '/it-leistungen/it-service-support' },
+    { text: 'Hardware & Software', href: '/it-leistungen/hardware-software' },
+];
+
+const socialLinks = [
+    { name: 'LinkedIn', icon: 'lucide:linkedin', href: '#' },
+    { name: 'Facebook', icon: 'lucide:facebook', href: '#' },
+]
+---
+<footer class="bg-primary-900 text-primary-200 pt-20 pb-8">
+  <div class="container mx-auto px-4 md:px-6 max-w-7xl">
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <!-- Column 1: Logo & About -->
+      <div class="space-y-4">
+        <a href="/" aria-label="Wimmer EDV Startseite">
+          <Image src={WimmerLogoLight} alt="Wimmer EDV Logo" width={180} height={32} class="h-8 w-auto" />
+        </a>
+        <p class="text-base text-primary-300 leading-relaxed pr-4">
+          Ihr Gold-Zertifizierter IT-Partner in St. Pölten. Wir bieten zuverlässige und proaktive IT-Lösungen, damit Sie sich auf Ihr Kerngeschäft konzentrieren können.
+        </p>
+        <div class="flex space-x-4 pt-2">
+            {socialLinks.map(link => (
+                <a href={link.href} aria-label={`Wimmer EDV auf ${link.name}`} target="_blank" rel="noopener noreferrer" class="text-primary-300 hover:text-accent-500 transition-colors duration-200 ease-in-out">
+                    <Icon name={link.icon} class="w-6 h-6" />
+                </a>
+            ))}
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div>
+        <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+        <ul class="space-y-3">
+          {quickLinks.map(link => (
+            <li>
+              <a href={link.href} class="hover:text-accent-500 transition-colors duration-200 ease-in-out hover:underline underline-offset-4 decoration-primary-500">
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Column 3: Services -->
+      <div>
+        <h3 class="text-lg font-semibold text-white mb-4">Leistungen</h3>
+        <ul class="space-y-3">
+          {serviceLinks.map(link => (
+            <li>
+              <a href={link.href} class="hover:text-accent-500 transition-colors duration-200 ease-in-out hover:underline underline-offset-4 decoration-primary-500">
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Column 4: Contact -->
+      <div>
+        <h3 class="text-lg font-semibold text-white mb-4">Kontakt</h3>
+        <address class="not-italic space-y-3 text-primary-300">
+          <p>
+            <a href="https://maps.app.goo.gl/..." target="_blank" rel="noopener noreferrer" class="hover:text-accent-500 transition-colors duration-200 ease-in-out">
+              Dr.-Adolf-Schärf-Straße 10<br>
+              A-3107 St. Pölten, Austria
+            </a>
+          </p>
+          <p>
+            <a href="tel:+4312345678" class="hover:text-accent-500 transition-colors duration-200 ease-in-out">
+              +43 XXX XXXXXX
+            </a>
+          </p>
+          <p>
+            <a href="mailto:office@wimmer-edv.at" class="hover:text-accent-500 transition-colors duration-200 ease-in-out break-all">
+              office@wimmer-edv.at
+            </a>
+          </p>
+        </address>
+      </div>
+    </div>
+
+    <!-- Certifications -->
+    <div class="mt-16 text-center">
+        <h3 class="text-lg font-semibold text-white mb-6">Unsere Zertifizierungen</h3>
+        <div class="flex justify-center items-center gap-x-8 gap-y-4 flex-wrap">
+            {sortedCertifications.map(cert => (
+                <a href={cert.data.partner_url} target="_blank" rel="noopener noreferrer" class="opacity-80 hover:opacity-100 transition-opacity duration-200 ease-in-out">
+                    <Image 
+                        src={cert.data.logo} 
+                        alt={`${cert.data.partner_name} ${cert.data.level}`}
+                        height={40}
+                        width={150}
+                        class="h-10 w-auto"
+                        loading="lazy"
+                    />
+                </a>
+            ))}
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-16 pt-8 border-t border-primary-700 text-center text-primary-400 text-sm">
+      <p>&copy; {currentYear} Wimmer EDV GmbH. Alle Rechte vorbehalten.</p>
+      <div class="mt-2 space-x-4">
+        <a href="/impressum" class="hover:text-accent-500 transition-colors duration-200 ease-in-out">Impressum</a>
+        <span>&bull;</span>
+        <a href="/datenschutz" class="hover:text-accent-500 transition-colors duration-200 ease-in-out">Datenschutz</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+```

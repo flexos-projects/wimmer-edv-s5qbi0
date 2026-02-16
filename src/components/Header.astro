@@ -1,0 +1,195 @@
+```astro
+---
+import { Icon } from 'astro-icon/components';
+
+const navLinks = [
+    { href: "/it-leistungen", label: "IT-Leistungen" },
+    { href: "/warum-wir", label: "Warum Wir?" },
+    { href: "/ueber-uns", label: "Über Uns" },
+    { href: "/aktuelles", label: "Aktuelles" },
+];
+
+// Placeholder - In a real app, this should come from a global data source or content collection
+const phoneNumber = "+43 123 456789";
+const phoneNumberHref = "tel:+43123456789";
+---
+
+<header id="main-header" class="fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300 ease-in-out bg-transparent text-white">
+  <div class="container mx-auto px-4 md:px-6 max-w-7xl flex justify-between items-center">
+    <!-- Logo -->
+    <a href="/" class="flex-shrink-0" aria-label="Wimmer EDV Homepage">
+      <img src="/logo-light.svg" alt="Wimmer EDV Logo" class="h-8 md:h-10 transition-opacity duration-300" id="header-logo-light">
+      <img src="/logo-dark.svg" alt="Wimmer EDV Logo" class="h-8 md:h-10 absolute top-4 opacity-0 transition-opacity duration-300" id="header-logo-dark">
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden lg:flex items-center gap-x-6">
+      {navLinks.map(link => (
+        <a href={link.href} class="text-base font-medium text-white hover:text-accent-500 transition-colors duration-200 ease-in-out" data-nav-link>
+          {link.label}
+        </a>
+      ))}
+      <a href={phoneNumberHref} class="flex items-center gap-x-2 text-base font-medium text-white hover:text-accent-500 transition-colors duration-200 ease-in-out" data-nav-link>
+        <Icon name="lucide:phone" class="w-4 h-4" />
+        {phoneNumber}
+      </a>
+      <a href="/kontakt" class="btn btn-outline-white ml-4">
+        Kontakt
+      </a>
+    </nav>
+
+    <!-- Mobile Menu Trigger -->
+    <button id="mobile-menu-trigger" class="lg:hidden text-white focus:outline-none focus:ring-2 focus:ring-accent-500/50 rounded-md p-2" aria-label="Mobiles Menü öffnen" aria-controls="mobile-menu-drawer" aria-expanded="false">
+      <Icon name="lucide:menu" class="w-7 h-7" />
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Menu Drawer -->
+<div id="mobile-menu-overlay" class="fixed inset-0 bg-primary-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-[49] lg:hidden"></div>
+<div id="mobile-menu-drawer" class="fixed top-0 right-0 h-full w-full max-w-xs bg-primary-800 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out p-6 z-50 lg:hidden" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
+    <div class="flex justify-between items-center mb-8">
+        <h2 id="mobile-menu-title" class="text-xl font-bold text-white">Menü</h2>
+        <button id="mobile-menu-close" class="text-white focus:outline-none focus:ring-2 focus:ring-accent-500/50 rounded-md p-2" aria-label="Mobiles Menü schließen">
+            <Icon name="lucide:x" class="w-7 h-7" />
+        </button>
+    </div>
+    <nav class="flex flex-col space-y-4">
+        {navLinks.map(link => (
+            <a href={link.href} class="text-2xl font-bold text-white hover:text-accent-500 transition-colors duration-200 ease-in-out py-2">
+                {link.label}
+            </a>
+        ))}
+        <a href="/kontakt" class="btn btn-primary mt-6 w-full">
+            Kontakt aufnehmen
+        </a>
+        <a href={phoneNumberHref} class="btn btn-outline-white mt-2 w-full">
+            <Icon name="lucide:phone" class="w-4 h-4 mr-2" />
+            {phoneNumber}
+        </a>
+    </nav>
+</div>
+
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    // === SCROLL BEHAVIOR ===
+    const header = document.getElementById('main-header');
+    const logoLight = document.getElementById('header-logo-light');
+    const logoDark = document.getElementById('header-logo-dark');
+    const navLinks = document.querySelectorAll('[data-nav-link]');
+    const ctaBtn = header.querySelector('.btn-outline-white');
+
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        header.classList.add('bg-primary-700', 'shadow-lg');
+        header.classList.remove('bg-transparent');
+        
+        logoLight.classList.add('opacity-0');
+        logoDark.classList.remove('opacity-0');
+
+        navLinks.forEach(link => {
+          link.classList.remove('text-white');
+          link.classList.add('text-primary-100');
+        });
+        
+        if (ctaBtn) {
+          ctaBtn.classList.remove('border-white', 'text-white', 'hover:bg-white/10');
+          ctaBtn.classList.add('border-primary-100', 'text-primary-100', 'hover:bg-primary-100/10');
+        }
+
+      } else {
+        header.classList.remove('bg-primary-700', 'shadow-lg');
+        header.classList.add('bg-transparent');
+
+        logoLight.classList.remove('opacity-0');
+        logoDark.classList.add('opacity-0');
+
+        navLinks.forEach(link => {
+          link.classList.add('text-white');
+          link.classList.remove('text-primary-100');
+        });
+        
+        if (ctaBtn) {
+          ctaBtn.classList.add('border-white', 'text-white', 'hover:bg-white/10');
+          ctaBtn.classList.remove('border-primary-100', 'text-primary-100', 'hover:bg-primary-100/10');
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Run on load
+
+    // === MOBILE MENU BEHAVIOR ===
+    const trigger = document.getElementById('mobile-menu-trigger');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const drawer = document.getElementById('mobile-menu-drawer');
+    const focusableElementsString = 'a[href], button:not([disabled])';
+    let focusableElements;
+    let firstFocusableElement;
+    let lastFocusableElement;
+
+
+    const openMenu = () => {
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      drawer.classList.remove('translate-x-full');
+      trigger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+
+      focusableElements = drawer.querySelectorAll(focusableElementsString);
+      firstFocusableElement = focusableElements[0];
+      lastFocusableElement = focusableElements[focusableElements.length - 1];
+      firstFocusableElement.focus();
+
+      drawer.addEventListener('keydown', trapFocus);
+    };
+
+    const closeMenu = () => {
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      drawer.classList.add('translate-x-full');
+      trigger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      trigger.focus();
+
+      drawer.removeEventListener('keydown', trapFocus);
+    };
+
+    const trapFocus = (e) => {
+        const isTabPressed = e.key === 'Tab';
+
+        if (!isTabPressed) {
+            return;
+        }
+
+        if (e.shiftKey) { // Shift + Tab
+            if (document.activeElement === firstFocusableElement) {
+                lastFocusableElement.focus();
+                e.preventDefault();
+            }
+        } else { // Tab
+            if (document.activeElement === lastFocusableElement) {
+                firstFocusableElement.focus();
+                e.preventDefault();
+            }
+        }
+    }
+
+
+    trigger.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+
+    // Clean up scroll listener on page unload
+    document.addEventListener('astro:before-swap', () => {
+        window.removeEventListener('scroll', handleScroll);
+    }, { once: true });
+  });
+</script>
+
+<style>
+    .btn-outline-white {
+        @apply border border-white text-white font-medium py-2 px-5 rounded-lg transition-all duration-200 ease-in-out hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50;
+    }
+</style>
+```

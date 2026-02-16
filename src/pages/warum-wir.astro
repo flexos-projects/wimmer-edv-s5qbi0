@@ -1,0 +1,157 @@
+```astro
+---
+import { getCollection, getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Section from '../../components/Section.astro';
+import CTA from '../../components/CTA.astro';
+
+import whyUsHeroImage from '../../assets/images/why-us-hero.jpg';
+
+const certifications = await getCollection('certifications', ({ data }) => {
+  return data.displayOnWhyUs === true;
+});
+const sortedCertifications = certifications.sort((a, b) => (a.data.displayOrder || 99) - (b.data.displayOrder || 99));
+
+const featuredTestimonial = await getEntry('testimonials', 'eder-ziviltechniker');
+---
+
+<BaseLayout
+  title="Warum Wimmer EDV? Ihr verlässlicher IT-Partner in St. Pölten"
+  description="Persönliche Betreuung, höchste Zertifizierungen (Microsoft Gold Partner) und nachweislich perfekter Service. Erfahren Sie, was uns auszeichnet."
+>
+  <Hero
+    variant="split"
+    title="Ihr Erfolg ist unser Antrieb."
+    subtitle="Wir sind mehr als nur ein IT-Dienstleister. Wir sind Ihr strategischer Partner, der persönlich dafür sorgt, dass Ihre Technologie reibungslos funktioniert, damit Sie sich auf Ihr Kerngeschäft konzentrieren können. Entdecken Sie, was uns auszeichnet."
+    ctaText="Jetzt beraten lassen"
+    ctaLink="/kontakt"
+  >
+    <Image
+      slot="image"
+      src={whyUsHeroImage}
+      alt="Ein IT-Experte von Wimmer EDV im Gespräch mit einem Kunden in einem modernen Büro"
+      widths={[400, 800, 1200]}
+      sizes="(max-width: 768px) 100vw, 50vw"
+      format="webp"
+      class="rounded-2xl shadow-xl object-cover w-full h-full max-h-[500px]"
+    />
+  </Hero>
+
+  <Section id="difference" background="surface-100">
+    <div class="text-center">
+      <h2 class="text-4xl md:text-5xl font-bold text-primary-700">
+        Der Wimmer EDV Unterschied
+      </h2>
+      <p class="mt-4 text-lg md:text-xl text-surface-600 max-w-3xl mx-auto">
+        Technologie ist nur so gut wie die Menschen dahinter. Wir kombinieren erstklassige Expertise mit persönlichem Engagement und nachweisbarer Qualität.
+      </p>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <!-- Card 1: Persönlich & Verantwortlich -->
+      <div class="bg-white p-8 rounded-2xl shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+        <div class="p-4 inline-block rounded-full bg-primary-50 text-primary-500 mb-6">
+          <Icon name="lucide:user-check" class="w-10 h-10" />
+        </div>
+        <h3 class="text-2xl font-bold text-primary-700 mb-4">Persönlich & Verantwortlich</h3>
+        <p class="text-surface-600">
+          Bei uns sind Sie keine Nummer. Als inhabergeführtes Unternehmen steht Thomas Wimmer persönlich für die Qualität unserer Arbeit ein. Sie haben immer einen direkten Ansprechpartner, der Ihre Systeme und Bedürfnisse genau kennt.
+        </p>
+      </div>
+
+      <!-- Card 2: Gold-Standard Expertise -->
+      <div class="bg-white p-8 rounded-2xl shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+        <div class="p-4 inline-block rounded-full bg-accent-50 text-accent-500 mb-6">
+          <Icon name="lucide:award" class="w-10 h-10" />
+        </div>
+        <h3 class="text-2xl font-bold text-primary-700 mb-4">Gold-Standard Expertise</h3>
+        <p class="text-surface-600 mb-6">
+          Unsere Zertifizierungen von Branchenführern wie Microsoft und Veeam sind mehr als nur Logos. Sie sind der Beweis für unser tiefes technisches Wissen und unser Engagement für höchste Qualitätsstandards.
+        </p>
+        <div class="flex justify-center items-center gap-6 grayscale opacity-70">
+          {sortedCertifications.map(cert => (
+            <Image 
+              src={cert.data.logo} 
+              alt={`${cert.data.partnerName} ${cert.data.level} Logo`}
+              height={40}
+              class="h-10 w-auto"
+            />
+          ))}
+        </div>
+      </div>
+
+      <!-- Card 3: Bewiesen & Gelobt -->
+      <div class="bg-white p-8 rounded-2xl shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+        <div class="p-4 inline-block rounded-full bg-secondary-100 text-secondary-700 mb-6">
+          <Icon name="lucide:star" class="w-10 h-10" />
+        </div>
+        <h3 class="text-2xl font-bold text-primary-700 mb-4">Bewiesen & Gelobt</h3>
+        <p class="text-surface-600">
+          Das beste Marketing sind begeisterte Kunden. Unsere einstimmigen 5-Sterne-Bewertungen auf Google und Facebook sprechen für sich. Wir liefern, was wir versprechen – schnell, kompetent und zuverlässig.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  {featuredTestimonial && (
+    <Section id="testimonial" background="surface-50">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="flex justify-center mb-4">
+          {[...Array(5)].map(() => <Icon name="lucide:star" class="w-6 h-6 text-secondary-500 fill-current" />)}
+        </div>
+        <blockquote class="text-2xl md:text-3xl italic font-light leading-relaxed text-surface-800 mb-6">
+          "{featuredTestimonial.data.quote}"
+        </blockquote>
+        <p class="text-lg font-medium text-primary-700">
+          {featuredTestimonial.data.authorName}, 
+          <span class="text-surface-600 font-normal">{featuredTestimonial.data.authorCompany}</span>
+        </p>
+      </div>
+    </Section>
+  )}
+
+  <Section id="checklist" background="surface-100">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+      <div class="text-center lg:text-left">
+        <h2 class="text-4xl md:text-5xl font-bold text-primary-700">
+          Der richtige Partner für Ihre IT
+        </h2>
+        <p class="mt-4 text-lg md:text-xl text-surface-600">
+          Die Wahl eines IT-Partners ist eine wichtige Entscheidung. Achten Sie auf diese Kriterien, um sicherzustellen, dass Sie die beste Betreuung für Ihr Unternehmen erhalten.
+        </p>
+      </div>
+      <div class="bg-white p-8 md:p-10 rounded-2xl shadow-lg">
+        <ul class="space-y-4">
+          {[
+            { text: "Nachweisliche Zertifizierungen von Herstellern" },
+            { text: "Ein fester, persönlicher Ansprechpartner" },
+            { text: "Regionale Nähe für schnelle Vor-Ort-Hilfe" },
+            { text: "Proaktive Wartung statt reaktiver Reparatur" },
+            { text: "Klare, verständliche Kommunikation ohne Fachjargon" },
+            { text: "Exzellente und überprüfbare Kundenbewertungen" },
+          ].map(item => (
+            <li class="flex items-start">
+              <div class="flex-shrink-0 w-6 h-6 bg-accent-500 text-white rounded-full flex items-center justify-center mr-4 mt-1">
+                <Icon name="lucide:check" class="w-4 h-4" />
+              </div>
+              <span class="text-lg text-surface-700">{item.text}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <CTA 
+    title="Überzeugt? Machen Sie den nächsten Schritt."
+    subtitle="Lassen Sie uns in einem unverbindlichen Gespräch herausfinden, wie wir Ihre IT auf das nächste Level heben können. Wir freuen uns darauf, Sie kennenzulernen."
+    buttonText="Jetzt Kontakt aufnehmen"
+    buttonLink="/kontakt"
+  />
+
+</BaseLayout>
+```

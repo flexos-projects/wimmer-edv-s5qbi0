@@ -1,0 +1,54 @@
+```astro
+---
+import { Icon } from 'astro-icon/components';
+import Section from './Section.astro';
+
+interface Props {
+  variant?: 'primary' | 'accent';
+  headline: string;
+  text?: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+const {
+  variant = 'primary',
+  headline,
+  text,
+  buttonText,
+  buttonLink
+} = Astro.props;
+
+const backgroundClasses = {
+  primary: 'bg-primary-700',
+  accent: 'bg-accent-500',
+};
+
+const buttonTextClasses = {
+  primary: 'text-primary-700',
+  accent: 'text-accent-600',
+}
+---
+<section class:list={[backgroundClasses[variant], "py-16 text-white md:py-20"]}>
+  <div class="container mx-auto max-w-4xl px-4 text-center md:px-6">
+    <h2 class="mb-4 text-3xl font-bold md:text-4xl">
+      {headline}
+    </h2>
+    {text && (
+      <p class="mx-auto mb-8 max-w-2xl text-lg font-light md:text-xl">
+        {text}
+      </p>
+    )}
+    <a
+      href={buttonLink}
+      class:list={[
+        buttonTextClasses[variant],
+        "inline-flex items-center rounded-lg bg-white py-3 px-8 font-semibold shadow-lg transition-colors duration-200 ease-in-out hover:bg-surface-100 focus:outline-none focus:ring-4 focus:ring-white/50"
+      ]}
+    >
+      {buttonText}
+      <Icon name="lucide:arrow-right" class="ml-2 h-5 w-5" />
+    </a>
+  </div>
+</section>
+```

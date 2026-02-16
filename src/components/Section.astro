@@ -1,0 +1,43 @@
+```astro
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'section'> {
+  background?: 'default' | 'accentuated' | 'dark';
+  padding?: 'default' | 'sm';
+  borderTop?: boolean;
+}
+
+const { 
+  background = 'default', 
+  padding = 'default', 
+  borderTop = false,
+  class: className, 
+  ...rest 
+} = Astro.props;
+
+const backgroundClasses = {
+  default: 'bg-surface-50',
+  accentuated: 'bg-surface-100',
+  dark: 'bg-primary-700 text-white',
+};
+
+const paddingClasses = {
+  default: 'py-24 md:py-32',
+  sm: 'py-16 md:py-20',
+};
+---
+<section
+  class:list={[
+    backgroundClasses[background],
+    paddingClasses[padding],
+    { 'border-t border-surface-200': borderTop },
+    className,
+  ]}
+  {...rest}
+>
+  <div class="mx-auto max-w-7xl px-4 md:px-6">
+    <slot />
+  </div>
+</section>
+```

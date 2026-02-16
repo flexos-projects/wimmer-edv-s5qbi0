@@ -1,0 +1,62 @@
+```astro
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A versatile, reusable card component for displaying content in a structured format.
+ * It is designed to be highly flexible using named slots to support multiple variations
+ * like services, blog posts, or team members, as defined in the project's design patterns.
+ *
+ * @component Card (Astro)
+ * @prop {string} href - The URL the card links to. The entire card is a clickable link.
+ * @prop {string} title - A descriptive title for the content, used for the `aria-label` to improve accessibility.
+ * @prop {string} [class] - Optional additional CSS classes to apply to the card container.
+ *
+ * @slot default - The main content of the card, typically for headings and paragraphs.
+ * @slot image - For an image, usually at the top of the card (Image Top variant).
+ * @slot icon - For an icon, usually placed before the main content (Icon Top variant).
+ * @slot actions - For call-to-action links or buttons at the bottom of the card.
+ */
+
+interface Props extends HTMLAttributes<'a'> {
+  href: string;
+  title: string;
+  class?: string;
+}
+
+const { href, title, class: className, ...rest } = Astro.props;
+---
+<a
+  href={href}
+  aria-label={`Read more about ${title}`}
+  class:list={[
+    // Core Styles from design/patterns.md
+    'group bg-white rounded-xl shadow-md overflow-hidden flex flex-col',
+    // Animation & Motion Language from design-system.md
+    'transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1',
+    className,
+  ]}
+  {...rest}
+>
+  <!-- Slot for the "Image Top" variant. The `overflow-hidden` on the parent container ensures the image corners are clipped correctly. -->
+  <slot name="image" />
+
+  <!-- The main content area that can grow to fill available space, ensuring consistent alignment in grids. -->
+  <div class="p-6 flex flex-col flex-grow">
+    <!-- Slot for the "Icon Top" variant. -->
+    <slot name="icon" />
+
+    <!-- Default slot for primary text content like titles and descriptions. -->
+    <div class="flex-grow">
+      <slot />
+    </div>
+  </div>
+
+  <!-- Actions slot, rendered only if content is provided. `mt-auto` pushes it to the bottom. -->
+  {Astro.slots.has('actions') && (
+    <div class="p-6 pt-0 mt-auto">
+      <slot name="actions" />
+    </div>
+  )}
+</a>
+```

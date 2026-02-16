@@ -1,0 +1,194 @@
+```astro
+---
+import { Icon } from 'astro-icon/components';
+
+// This component uses a client:* directive on the page where it's used.
+// e.g., <ContactForm client:visible />
+---
+<div id="form-container" class="w-full">
+  <form id="contact-form" class="space-y-6" novalidate>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div>
+        <label for="name" class="block text-sm font-medium text-primary-800 mb-2">Ihr Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          required 
+          class="w-full px-4 py-3 rounded-lg border border-surface-300 bg-surface-50 placeholder-surface-400 text-surface-800 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-300 transition-all duration-200 ease-in-out" 
+          placeholder="Max Mustermann"
+        >
+        <p id="name-error" class="text-error text-sm font-medium mt-1 hidden">Bitte geben Sie Ihren Namen an.</p>
+      </div>
+      <div>
+        <label for="company" class="block text-sm font-medium text-primary-800 mb-2">Firma (Optional)</label>
+        <input 
+          type="text" 
+          id="company" 
+          name="company" 
+          class="w-full px-4 py-3 rounded-lg border border-surface-300 bg-surface-50 placeholder-surface-400 text-surface-800 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-300 transition-all duration-200 ease-in-out" 
+          placeholder="Ihre Firma"
+        >
+      </div>
+    </div>
+
+    <div>
+      <label for="email" class="block text-sm font-medium text-primary-800 mb-2">E-Mail Adresse</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        required 
+        class="w-full px-4 py-3 rounded-lg border border-surface-300 bg-surface-50 placeholder-surface-400 text-surface-800 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-300 transition-all duration-200 ease-in-out" 
+        placeholder="ihre@email.at"
+      >
+      <p id="email-error" class="text-error text-sm font-medium mt-1 hidden">Bitte geben Sie eine gültige E-Mail an.</p>
+    </div>
+
+    <div>
+      <label for="message" class="block text-sm font-medium text-primary-800 mb-2">Ihre Nachricht</label>
+      <textarea 
+        id="message" 
+        name="message" 
+        required 
+        rows="5" 
+        class="w-full px-4 py-3 rounded-lg border border-surface-300 bg-surface-50 placeholder-surface-400 text-surface-800 focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-300 transition-all duration-200 ease-in-out min-h-[120px]" 
+        placeholder="Erzählen Sie uns von Ihrem Anliegen..."
+      ></textarea>
+      <p id="message-error" class="text-error text-sm font-medium mt-1 hidden">Bitte geben Sie eine Nachricht ein.</p>
+    </div>
+
+    <div>
+      <div class="flex items-start">
+        <input id="privacy" name="privacy" type="checkbox" required class="h-4 w-4 mt-1 rounded border-surface-300 text-accent-600 focus:ring-accent-500">
+        <div class="ml-3 text-sm">
+          <label for="privacy" class="font-medium text-surface-700">Ich stimme der <a href="/datenschutz" class="text-primary-600 hover:underline">Datenschutzerklärung</a> zu.</label>
+        </div>
+      </div>
+       <p id="privacy-error" class="text-error text-sm font-medium mt-1 hidden">Sie müssen der Datenschutzerklärung zustimmen.</p>
+    </div>
+
+    <div class="flex items-center justify-between">
+      <div id="form-status" class="text-sm font-medium" role="status"></div>
+      <button 
+        type="submit"
+        id="submit-button"
+        class="inline-flex items-center justify-center font-medium py-3 px-8 rounded-lg transition-colors duration-200 ease-in-out bg-accent-500 text-white hover:bg-accent-600 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 disabled:bg-surface-400 disabled:cursor-not-allowed"
+      >
+        <span id="button-text">Nachricht senden</span>
+        <Icon name="lucide:loader-circle" id="loading-spinner" class="animate-spin ml-2 h-5 w-5 hidden" />
+      </button>
+    </div>
+  </form>
+
+  <div id="success-message" class="hidden mt-6 p-6 rounded-lg bg-accent-50 text-accent-700 border border-accent-200">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <Icon name="lucide:check-circle-2" class="h-6 w-6 text-accent-500" />
+      </div>
+      <div class="ml-3">
+        <h3 class="text-lg font-bold">Vielen Dank!</h3>
+        <p class="mt-2 text-base">Ihre Nachricht wurde erfolgreich versendet. Wir werden uns in Kürze bei Ihnen melden.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const formContainer = document.getElementById('form-container');
+    if (!formContainer) return;
+
+    const form = formContainer.querySelector<HTMLFormElement>('#contact-form');
+    const successMessage = formContainer.querySelector<HTMLDivElement>('#success-message');
+    const submitButton = formContainer.querySelector<HTMLButtonElement>('#submit-button');
+    const buttonText = formContainer.querySelector<HTMLSpanElement>('#button-text');
+    const loadingSpinner = formContainer.querySelector<HTMLElement>('#loading-spinner');
+    const formStatus = formContainer.querySelector<HTMLDivElement>('#form-status');
+
+    if (!form || !submitButton || !buttonText || !loadingSpinner || !formStatus || !successMessage) return;
+
+    const inputs = {
+      name: form.querySelector<HTMLInputElement>('#name'),
+      email: form.querySelector<HTMLInputElement>('#email'),
+      message: form.querySelector<HTMLTextAreaElement>('#message'),
+      privacy: form.querySelector<HTMLInputElement>('#privacy'),
+    };
+
+    const errors = {
+      name: form.querySelector<HTMLParagraphElement>('#name-error'),
+      email: form.querySelector<HTMLParagraphElement>('#email-error'),
+      message: form.querySelector<HTMLParagraphElement>('#message-error'),
+      privacy: form.querySelector<HTMLParagraphElement>('#privacy-error'),
+    };
+
+    const validateField = (input: HTMLInputElement | HTMLTextAreaElement, errorEl: HTMLParagraphElement, validationFn: (value: string | boolean) => boolean, errorMessage: string) => {
+      const value = input.type === 'checkbox' ? (input as HTMLInputElement).checked : input.value.trim();
+      const isValid = validationFn(value);
+      
+      if (!isValid) {
+        errorEl.textContent = errorMessage;
+        errorEl.classList.remove('hidden');
+        input.classList.add('border-error', 'focus:ring-error', 'focus:border-error');
+        input.setAttribute('aria-invalid', 'true');
+        return false;
+      }
+      
+      errorEl.classList.add('hidden');
+      input.classList.remove('border-error', 'focus:ring-error', 'focus:border-error');
+      input.setAttribute('aria-invalid', 'false');
+      return true;
+    };
+
+    const validateForm = () => {
+      let isValid = true;
+      isValid = validateField(inputs.name, errors.name, (v) => v !== '', 'Bitte geben Sie Ihren Namen an.') && isValid;
+      isValid = validateField(inputs.email, errors.email, (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v as string), 'Bitte geben Sie eine gültige E-Mail an.') && isValid;
+      isValid = validateField(inputs.message, errors.message, (v) => v !== '', 'Bitte geben Sie eine Nachricht ein.') && isValid;
+      isValid = validateField(inputs.privacy, errors.privacy, (v) => v === true, 'Sie müssen der Datenschutzerklärung zustimmen.') && isValid;
+      return isValid;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!validateForm()) {
+        return;
+      }
+
+      // Enter submitting state
+      submitButton.disabled = true;
+      buttonText.textContent = 'Sende...';
+      loadingSpinner.classList.remove('hidden');
+      formStatus.textContent = '';
+      formStatus.className = 'text-sm font-medium';
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          form.classList.add('hidden');
+          successMessage.classList.remove('hidden');
+        } else {
+          const result = await response.json();
+          formStatus.textContent = result.message || 'Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.';
+          formStatus.classList.add('text-error');
+        }
+      } catch (error) {
+        formStatus.textContent = 'Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.';
+        formStatus.classList.add('text-error');
+      } finally {
+        // Restore button state
+        submitButton.disabled = false;
+        buttonText.textContent = 'Nachricht senden';
+        loadingSpinner.classList.add('hidden');
+      }
+    });
+  });
+</script>
+```

@@ -1,0 +1,90 @@
+```astro
+---
+// This component is designed to be used as an Astro island (client:visible).
+// It handles its own logic for checking and setting consent in localStorage.
+---
+<div
+  id="cookie-consent-banner"
+  class="fixed bottom-0 left-0 right-0 z-[100] transform-gpu translate-y-full opacity-0 transition-all duration-500 ease-in-out"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="cookie-consent-title"
+  aria-describedby="cookie-consent-description"
+>
+  <div class="bg-primary-800/95 backdrop-blur-sm shadow-2xl">
+    <div class="container mx-auto max-w-7xl px-4 py-4 md:px-6">
+      <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div class="text-center md:text-left">
+          <h2 id="cookie-consent-title" class="sr-only">Cookie-Einwilligung</h2>
+          <p id="cookie-consent-description" class="text-sm text-surface-100">
+            Wir verwenden Cookies, um Ihre Erfahrung auf unserer Website zu verbessern und die Leistung zu analysieren.
+            <a href="/datenschutz" class="font-medium underline transition-colors duration-200 hover:text-accent-500">Mehr erfahren</a>.
+          </p>
+        </div>
+        <div class="flex flex-shrink-0 items-center gap-4">
+          <button
+            id="cookie-decline"
+            type="button"
+            class="rounded-lg px-5 py-2 text-sm font-medium text-surface-100 transition-colors duration-200 hover:bg-primary-700"
+          >
+            Ablehnen
+          </button>
+          <button
+            id="cookie-accept"
+            type="button"
+            class="rounded-lg bg-accent-500 px-6 py-2 text-sm font-medium text-white transition-colors duration-200 ease-in-out hover:bg-accent-600 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-primary-800"
+          >
+            Akzeptieren
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const CONSENT_KEY = 'wimmer_edv_cookie_consent';
+    const banner = document.getElementById('cookie-consent-banner') as HTMLElement | null;
+    const acceptBtn = document.getElementById('cookie-accept') as HTMLButtonElement | null;
+    const declineBtn = document.getElementById('cookie-decline') as HTMLButtonElement | null;
+
+    if (!banner || !acceptBtn || !declineBtn) {
+      return;
+    }
+
+    const consentData = localStorage.getItem(CONSENT_KEY);
+
+    // If no consent information is stored, show the banner.
+    if (!consentData) {
+      // Use a short timeout to prevent the banner from appearing too abruptly on page load.
+      setTimeout(() => {
+        banner.classList.remove('translate-y-full', 'opacity-0');
+      }, 500);
+    }
+
+    const handleConsent = (hasConsented: boolean) => {
+      const consentInfo = {
+        consented: hasConsented,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem(CONSENT_KEY, JSON.stringify(consentInfo));
+
+      banner.classList.add('translate-y-full', 'opacity-0');
+
+      // After the transition, set display to none for better accessibility.
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 500);
+
+      // If consent was given, dispatch a custom event that other scripts (e.g., for analytics) can listen for.
+      if (hasConsented) {
+        document.dispatchEvent(new CustomEvent('consentGiven'));
+      }
+    };
+
+    acceptBtn.addEventListener('click', () => handleConsent(true));
+    declineBtn.addEventListener('click', () => handleConsent(false));
+  });
+</script>
+```

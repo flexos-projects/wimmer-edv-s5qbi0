@@ -1,0 +1,141 @@
+```astro
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Section from './Section.astro';
+import Icon from 'astro-icon';
+
+interface Props {
+  variant: 'impact' | 'split' | 'minimal';
+  imageSrc?: ImageMetadata | string;
+  imageAlt?: string;
+  ctaText?: string;
+  ctaHref?: string;
+  class?: string;
+}
+
+const {
+  variant,
+  imageSrc,
+  imageAlt = '',
+  ctaText,
+  ctaHref,
+  class: className,
+} = Astro.props;
+---
+
+{/* IMPACT HERO */}
+{variant === 'impact' && (
+  <section class:list={["relative h-[80vh] min-h-[600px] lg:h-screen flex items-center justify-center text-center text-white overflow-hidden", className]}>
+    {imageSrc && (
+      <Image
+        src={imageSrc}
+        alt={imageAlt}
+        widths={[480, 768, 1280, 1920]}
+        sizes="100vw"
+        format="webp"
+        quality={80}
+        class="absolute inset-0 w-full h-full object-cover z-0"
+        loading="eager"
+      />
+    )}
+    <div class="absolute inset-0 bg-primary-900/70 z-10"></div>
+    <div class="relative z-20 container mx-auto px-4 md:px-6 max-w-5xl">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+        <slot name="title" />
+      </h1>
+      <div class="text-lg md:text-xl text-primary-100 font-light mb-8 max-w-3xl mx-auto">
+        <slot name="subtitle" />
+      </div>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        { ctaText && ctaHref && (
+          <a href={ctaHref} class="btn btn-primary w-full sm:w-auto">
+            {ctaText}
+          </a>
+        )}
+        <slot name="actions" />
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+      <a href="#main-content" aria-label="Scroll down" class="p-2">
+        <Icon name="lucide:arrow-down" class="w-8 h-8 text-white opacity-80 animate-bounce" />
+      </a>
+    </div>
+  </section>
+)}
+
+{/* SPLIT HERO */}
+{variant === 'split' && (
+  <Section class:list={["!py-20 md:!py-32", className]} background="surface-50">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div class="order-2 md:order-1">
+        {imageSrc && (
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            widths={[400, 800]}
+            sizes="(max-width: 768px) 100vw, 40vw"
+            format="webp"
+            quality={85}
+            class="rounded-2xl shadow-xl w-full h-auto object-cover max-h-[500px]"
+          />
+        )}
+      </div>
+      <div class="order-1 md:order-2 text-center md:text-left">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-700 leading-tight mb-4">
+          <slot name="title" />
+        </h1>
+        <div class="text-lg text-surface-800 mb-6">
+          <slot name="subtitle" />
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
+           { ctaText && ctaHref && (
+            <a href={ctaHref} class="btn btn-primary w-full sm:w-auto">
+              {ctaText}
+            </a>
+          )}
+          <slot name="actions" />
+        </div>
+      </div>
+    </div>
+  </Section>
+)}
+
+{/* MINIMAL HERO */}
+{variant === 'minimal' && (
+  <section class:list={["bg-primary-700 py-24 md:py-32 text-white", className]}>
+    <div class="container mx-auto px-4 md:px-6 max-w-4xl text-center">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+        <slot name="title" />
+      </h1>
+      <div class="text-lg md:text-xl font-light text-primary-100 mb-8 max-w-3xl mx-auto">
+        <slot name="subtitle" />
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        { ctaText && ctaHref && (
+          <a href={ctaHref} class="btn btn-accent w-full sm:w-auto">
+            {ctaText}
+          </a>
+        )}
+        <slot name="actions" />
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .btn {
+    @apply inline-flex items-center justify-center font-medium text-base py-3 px-8 rounded-lg transition-all duration-300 ease-in-out focus:outline-none focus:ring-4;
+  }
+  .btn-primary {
+    @apply bg-accent-500 text-white shadow-lg hover:bg-accent-600 hover:-translate-y-0.5 focus:ring-accent-500/50;
+  }
+  .btn-accent {
+    @apply bg-white text-primary-700 shadow-lg hover:bg-surface-100 hover:-translate-y-0.5 focus:ring-white/50;
+  }
+</style>
+```
