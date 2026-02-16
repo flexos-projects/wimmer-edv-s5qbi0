@@ -1,19 +1,27 @@
-```markdown
 ---
-type: config
-subtype: build
+id: builds.001:config
 title: Build 001 Configuration
-buildName: 001
-status: planning
+description: Tech stack, scope, and constraints for build 001
+sequence: 0
+status: active
+type: build
+subtype: config
+relatesTo:
+  - specs:009-technical_stack
+tags:
+  - build
+  - config
+createdAt: "2026-02-16T00:18:10.838Z"
+updatedAt: "2026-02-16T00:18:10.838Z"
 ---
 
 ## Stack (Fixed)
 - **Framework**: Astro 5 (static site generation, content collections)
-- **Styling**: Tailwind CSS 4 (via `@tailwindcss/astro`)
-- **Deployment**: Vercel (static hosting)
+- **Styling**: Tailwind CSS 4 (via `@astrojs/tailwind`)
+- **Deployment**: Vercel (static hosting and serverless functions)
 - **Images**: Astro Image / Sharp for optimization
-- **Icons**: Astro Icon (using Lucide or Heroicons set for consistent iconography)
-- **SEO**: `@astrojs/sitemap` + custom meta components for `title`, `description`, Open Graph.
+- **Icons**: Astro Icon (using Lucide icon set for consistency)
+- **SEO**: `@astrojs/sitemap` + custom meta components for `title`, `description`, Open Graph, and JSON-LD structured data.
 
 ## Integrations Needed
 
@@ -93,4 +101,3 @@ This outlines what content is available and what needs to be produced before pag
 - **Semantic HTML & Accessibility**: Implement semantic HTML5 elements consistently. Adhere to WCAG 2.1 AA guidelines, including proper heading hierarchy, ARIA attributes where necessary, keyboard navigation, and minimum 44px touch targets.
 - **No Client-Side Frameworks for Content**: Avoid client-side JavaScript frameworks (React, Vue, Svelte, etc.) for rendering static page content. Islands architecture can be used sparingly for interactive components where essential.
 - **Design System Adherence**: All UI elements must directly reflect the tokens and component patterns defined in `design/design-system.md` and `design/patterns.md`.
-```
