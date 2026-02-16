@@ -1,236 +1,49 @@
-```markdown
 ---
-type: config
-subtype: build-queue
-title: Build Queue
-buildName: 001
-totalTasks: 31
+id: builds.001:queue
+title: Task Queue
+description: Task execution order for build 001
+sequence: 2
+status: active
+type: build
+subtype: queue
+relatesTo:
+  - builds.001:plan
+tags:
+  - build
+  - queue
+createdAt: "2026-02-16T00:24:02.921Z"
+updatedAt: "2026-02-16T00:24:02.921Z"
 ---
 
-### Phase 1: Project Skeleton
-
--   **Task 01: `package.json`**
-    -   **Phase:** 1
-    -   **Dependencies:** None
-    -   **Spec File Reference:** `builds/001/config.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 02: `astro.config.mjs`**
-    -   **Phase:** 1
-    -   **Dependencies:** 01
-    -   **Spec File Reference:** `builds/001/config.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 03: `tailwind.config.mjs`**
-    -   **Phase:** 1
-    -   **Dependencies:** 01
-    -   **Spec File Reference:** `design/design-system.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 04: `tsconfig.json`**
-    -   **Phase:** 1
-    -   **Dependencies:** 01
-    -   **Spec File Reference:** `builds/001/config.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 05: `src/env.d.ts`**
-    -   **Phase:** 1
-    -   **Dependencies:** 01
-    -   **Spec File Reference:** Astro Docs
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 06: `src/styles/global.css`**
-    -   **Phase:** 1
-    -   **Dependencies:** 03
-    -   **Spec File Reference:** `design/design-system.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 07: `public/favicon.svg`**
-    -   **Phase:** 1
-    -   **Dependencies:** None
-    -   **Spec File Reference:** `assets/manifest.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 08: `public/fonts/`**
-    -   **Phase:** 1
-    -   **Dependencies:** None
-    -   **Spec File Reference:** `design/design-system.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
-### Phase 2: Content Collections & Shared Components
-
--   **Task 09: `src/content/config.ts`**
-    -   **Phase:** 2
-    -   **Dependencies:** 02
-    -   **Spec File Reference:** `docs/core/004-database.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 10: `src/content/` (Placeholder Files)**
-    -   **Phase:** 2
-    -   **Dependencies:** 09
-    -   **Spec File Reference:** `docs/core/004-database.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 11: `src/components/SEO.astro`**
-    -   **Phase:** 2
-    -   **Dependencies:** None
-    -   **Spec File Reference:** `docs/core/007-technical.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 12: `src/layouts/BaseLayout.astro`**
-    -   **Phase:** 2
-    -   **Dependencies:** 06, 11
-    -   **Spec File Reference:** `docs/core/007-technical.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 13: `src/components/Header.astro`**
-    -   **Phase:** 2
-    -   **Dependencies:** 12
-    -   **Spec File Reference:** `specs/spec-16.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** complex
-
--   **Task 14: `src/components/Footer.astro`**
-    -   **Phase:** 2
-    -   **Dependencies:** 10, 12
-    -   **Spec File Reference:** `design/patterns.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 15: `src/components/Section.astro`**
-    -   **Phase:** 2
-    -   **Dependencies:** 03
-    -   **Spec File Reference:** `design/patterns.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 16: `src/components/Card.astro`**
-    -   **Phase:** 2
-    -   **Dependencies:** 03
-    -   **Spec File Reference:** `design/patterns.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 17: `src/components/Hero.astro`**
-    -   **Phase:** 2
-    -   **Dependencies:** 15
-    -   **Spec File Reference:** `design/patterns.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 18: `src/components/CTA.astro`**
-    -   **Phase:** 2
-    -   **Dependencies:** 15
-    -   **Spec File Reference:** `design/patterns.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
-### Phase 3: Page Construction
-
--   **Task 19: `src/pages/index.astro`**
-    -   **Phase:** 3
-    -   **Dependencies:** 12, 13, 14, 15, 16, 17, 18
-    -   **Spec File Reference:** `specs/spec-0.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 20: `src/pages/it-leistungen/index.astro`**
-    -   **Phase:** 3
-    -   **Dependencies:** 12, 13, 14, 16
-    -   **Spec File Reference:** `specs/spec-1.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 21: `src/pages/it-leistungen/[slug].astro`**
-    -   **Phase:** 3
-    -   **Dependencies:** 12, 13, 14
-    -   **Spec File Reference:** `specs/spec-2.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** complex
-
--   **Task 22: `src/pages/warum-wir.astro`**
-    -   **Phase:** 3
-    -   **Dependencies:** 12, 13, 14
-    -   **Spec File Reference:** `specs/spec-3.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 23: `src/pages/kontakt.astro`**
-    -   **Phase:** 3
-    -   **Dependencies:** 12, 13, 14
-    -   **Spec File Reference:** `specs/spec-6.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 24: `src/pages/impressum.astro` & `src/pages/datenschutz.astro`**
-    -   **Phase:** 3
-    -   **Dependencies:** 12, 13, 14
-    -   **Spec File Reference:** `specs/spec-9.md`, `specs/spec-10.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 25: `src/pages/ueber-uns.astro`**
-    -   **Phase:** 3
-    -   **Dependencies:** 12, 13, 14
-    -   **Spec File Reference:** `specs/spec-4.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
--   **Task 26: `src/pages/aktuelles/[...slug].astro`**
-    -   **Phase:** 3
-    -   **Dependencies:** 12, 13, 14, 16
-    -   **Spec File Reference:** `specs/spec-7.md`, `specs/spec-8.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** complex
-
-### Phase 4: Integrations & Interactivity
-
--   **Task 27: `src/components/ContactForm.astro`**
-    -   **Phase:** 4
-    -   **Dependencies:** None
-    -   **Spec File Reference:** `specs/spec-6.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** complex
-
--   **Task 28: `src/pages/api/contact.ts`**
-    -   **Phase:** 4
-    -   **Dependencies:** 01, 27
-    -   **Spec File Reference:** `docs/core/007-technical.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** complex
-
--   **Task 29: `src/components/CookieConsent.astro`**
-    -   **Phase:** 4
-    -   **Dependencies:** 12
-    -   **Spec File Reference:** `builds/001/config.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** medium
-
-### Phase 5: Finalization & Deployment Prep
-
--   **Task 30: `public/robots.txt`**
-    -   **Phase:** 5
-    -   **Dependencies:** 02
-    -   **Spec File Reference:** `docs/core/007-technical.md`
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-
--   **Task 31: `vercel.json`**
-    -   **Phase:** 5
-    -   **Dependencies:** None
-    -   **Spec File Reference:** Vercel Docs
-    -   **Status:** pending
-    -   **Estimated Complexity:** simple
-```
+| # | Task | Phase | Dependencies | Spec | Status | Complexity |
+|---|------|-------|-------------|------|--------|------------|
+| 01 | `package.json` | 1 | None | `builds/001/reference/00-astro-baseline.md` | pending | simple |
+| 02 | `astro.config.mjs` | 1 | #01 | `builds/001/reference/00-astro-baseline.md` | pending | simple |
+| 03 | `tailwind.config.mjs` | 1 | #01 | `design/design-system.md` | pending | medium |
+| 04 | `tsconfig.json` | 1 | #01 | `builds/001/config.md` | pending | simple |
+| 05 | `src/env.d.ts` | 1 | #01 | Astro Docs | pending | simple |
+| 06 | `src/styles/global.css` | 1 | #03 | `design/design-system.md` | pending | simple |
+| 07 | `public/favicon.svg` | 1 | None | `design/design-system.md` | pending | simple |
+| 08 | `public/fonts/Inter-Variable.woff2` | 1 | None | `design/design-system.md` | pending | simple |
+| 09 | `src/content/config.ts` | 2 | #02 | `docs/core/004-database.md` | pending | medium |
+| 10 | `src/content/` (placeholders) | 2 | #09 | `docs/core/004-database.md` | pending | simple |
+| 11 | `src/components/SEO.astro` | 2 | #02 | `builds/001/reference/00-astro-baseline.md` | pending | medium |
+| 12 | `src/layouts/BaseLayout.astro` | 2 | #06, #11 | `builds/001/reference/00-astro-baseline.md` | pending | medium |
+| 13 | `src/components/Header.astro` | 2 | #12 | `design/patterns.md` | pending | complex |
+| 14 | `src/components/Footer.astro` | 2 | #10, #12 | `design/patterns.md` | pending | medium |
+| 15 | `src/components/Section.astro` | 2 | #03 | `design/patterns.md` | pending | simple |
+| 16 | `src/components/Card.astro` | 2 | #03 | `design/patterns.md` | pending | medium |
+| 17 | `src/components/Hero.astro` | 2 | #15 | `design/patterns.md` | pending | medium |
+| 18 | `src/components/CTA.astro` | 2 | #15 | `design/patterns.md` | pending | simple |
+| 19 | `src/pages/index.astro` | 3 | #12, #13, #14, #17, #18 | `specs/spec-0.md` | pending | complex |
+| 20 | `src/pages/it-leistungen/index.astro` | 3 | #12, #13, #14, #16 | `specs/spec-1.md` | pending | medium |
+| 21 | `src/pages/it-leistungen/[slug].astro` | 3 | #12, #13, #14 | `specs/spec-2.md` | pending | complex |
+| 22 | `src/pages/warum-wir.astro` | 3 | #12, #13, #14, #15 | `specs/spec-3.md` | pending | medium |
+| 23 | `src/pages/kontakt.astro` | 3 | #12, #13, #14, #27 | `specs/spec-6.md` | pending | medium |
+| 24 | `src/pages/impressum.astro` | 3 | #12, #13, #14 | `specs/spec-9.md` | pending | simple |
+| 25 | `src/pages/datenschutz.astro` | 3 | #12, #13, #14 | `specs/spec-10.md` | pending | simple |
+| 26 | `src/components/ContactForm.astro` | 4 | #03 | `specs/spec-6.md` | pending | complex |
+| 27 | `src/pages/api/contact.ts` | 4 | #26 | `docs/core/007-technical.md` | pending | complex |
+| 28 | `src/components/CookieConsent.astro` | 4 | #12 | `builds/001/config.md` | pending | medium |
+| 29 | `public/robots.txt` | 5 | #02 | `builds/001/reference/00-astro-baseline.md` | pending | simple |
+| 30 | `vercel.json` | 5 | None | Vercel Docs | pending | simple |
